@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>和境心見社區 — 管理辦法總索引</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -14,6 +15,7 @@
       min-height: 100vh;
     }
 
+    /* ───── Header ───── */
     header {
       background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
       color: white;
@@ -22,6 +24,7 @@
     header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: .3rem; }
     header p  { font-size: .9rem; opacity: .8; }
 
+    /* ───── Toolbar ───── */
     .toolbar {
       background: white;
       border-bottom: 1px solid #e0e4ed;
@@ -55,13 +58,9 @@
     .filter-btns button:hover  { background: #eef3fb; border-color: #2d6a9f; }
     .filter-btns button.active { background: #2d6a9f; color: white; border-color: #2d6a9f; }
 
+    /* ───── Main table ───── */
     main { padding: 1.8rem 2.5rem; }
-
-    .stats {
-      font-size: .85rem;
-      color: #6b7280;
-      margin-bottom: 1.2rem;
-    }
+    .stats { font-size: .85rem; color: #6b7280; margin-bottom: 1.2rem; }
 
     table {
       width: 100%;
@@ -79,7 +78,6 @@
       font-weight: 600;
       color: #556;
       letter-spacing: .03em;
-      text-transform: uppercase;
       border-bottom: 1px solid #e4e8f0;
     }
     td {
@@ -97,6 +95,7 @@
       color: #1a3a5c;
       text-decoration: none;
       font-weight: 500;
+      cursor: pointer;
     }
     .doc-link:hover { color: #2d6a9f; text-decoration: underline; }
 
@@ -107,7 +106,6 @@
       font-size: .78rem;
       font-weight: 600;
     }
-    .badge-草案 { background: #fef3c7; color: #92400e; }
     .badge-草擬 { background: #e0f2fe; color: #0369a1; }
     .badge-正式 { background: #dcfce7; color: #166534; }
 
@@ -132,6 +130,119 @@
       font-size: .8rem;
       color: #9ca3af;
     }
+
+    /* ───── Viewer overlay ───── */
+    #viewer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 100;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2rem 1rem;
+      overflow-y: auto;
+    }
+    #viewer-overlay.open { display: flex; }
+
+    #viewer-box {
+      background: white;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 820px;
+      min-height: 200px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.2);
+      display: flex;
+      flex-direction: column;
+    }
+
+    #viewer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #e4e8f0;
+      background: #f8faff;
+      border-radius: 12px 12px 0 0;
+    }
+    #viewer-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #1a3a5c;
+    }
+    #viewer-close {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: #6b7280;
+      line-height: 1;
+      padding: .2rem .5rem;
+      border-radius: 4px;
+    }
+    #viewer-close:hover { background: #f0f2f8; color: #2c2c3a; }
+
+    #viewer-content {
+      padding: 2rem 2.5rem;
+      line-height: 1.9;
+      color: #2c2c3a;
+      flex: 1;
+    }
+
+    /* Markdown 樣式 */
+    #viewer-content h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1a3a5c;
+      margin-bottom: 1rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid #e4e8f0;
+    }
+    #viewer-content h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1a3a5c;
+      margin: 1.8rem 0 .6rem;
+      padding-left: .7rem;
+      border-left: 4px solid #2d6a9f;
+    }
+    #viewer-content h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2d4a6a;
+      margin: 1.2rem 0 .4rem;
+    }
+    #viewer-content p { margin: .5rem 0; }
+    #viewer-content strong { color: #1a3a5c; }
+    #viewer-content hr {
+      border: none;
+      border-top: 1px solid #e4e8f0;
+      margin: 1.2rem 0;
+    }
+    #viewer-content ul, #viewer-content ol {
+      padding-left: 1.5rem;
+      margin: .4rem 0;
+    }
+    #viewer-content li { margin: .3rem 0; }
+    #viewer-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: .8rem 0;
+      font-size: .9rem;
+    }
+    #viewer-content th, #viewer-content td {
+      border: 1px solid #e4e8f0;
+      padding: .5rem .8rem;
+      text-align: left;
+    }
+    #viewer-content th { background: #f0f4fb; font-weight: 600; }
+    #viewer-content em { color: #6b7280; font-size: .9rem; }
+
+    #viewer-loading {
+      text-align: center;
+      padding: 3rem;
+      color: #9ca3af;
+    }
   </style>
 </head>
 <body>
@@ -152,7 +263,7 @@
 
 <main>
   <div class="stats" id="stats"></div>
-  <table id="docTable">
+  <table>
     <thead>
       <tr>
         <th class="num">#</th>
@@ -169,112 +280,34 @@
 
 <footer>和境心見社區管委會 ｜ 本頁面由 Claude AI 自動產生</footer>
 
+<!-- Markdown 閱讀器 -->
+<div id="viewer-overlay">
+  <div id="viewer-box">
+    <div id="viewer-header">
+      <span id="viewer-title"></span>
+      <button id="viewer-close" onclick="closeViewer()">✕</button>
+    </div>
+    <div id="viewer-content">
+      <div id="viewer-loading">載入中…</div>
+    </div>
+  </div>
+</div>
+
 <script>
 const docs = [
-  {
-    num: 1,
-    name: "門禁磁控與 Etag 條碼管理辦法",
-    file: "和境心見社區-門禁磁控與Etag條碼管理辦法(草擬).md",
-    category: "門禁安全",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 2,
-    name: "健身房使用管理辦法",
-    file: "和境心見社區-健身房使用管理辦法(草擬).md",
-    category: "公共設施",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 3,
-    name: "訪客管制與夜間安寧維護管理辦法",
-    file: "和境心見社區-訪客管制與夜間安寧維護管理辦法(草擬).md",
-    category: "門禁安全",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 4,
-    name: "停車位與車輛管理辦法",
-    file: "和境心見社區-停車位與車輛管理辦法(草擬).md",
-    category: "停車管理",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 5,
-    name: "公共空間空調使用管理辦法",
-    file: "和境心見社區-公共空間空調使用管理辦法(草擬).md",
-    category: "公共設施",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 6,
-    name: "寵物管理辦法",
-    file: "和境心見社區-寵物管理辦法(草擬).md",
-    category: "住戶規範",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 7,
-    name: "裝修與施工管理辦法",
-    file: "和境心見社區-裝修與施工管理辦法(草擬).md",
-    category: "住戶規範",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 8,
-    name: "防災設備與流程管理辦法",
-    file: "和境心見社區-防災設備與流程管理辦法(草擬).md",
-    category: "防災安全",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 9,
-    name: "財務與費用管理辦法",
-    file: "和境心見社區-財務與費用管理辦法(草擬).md",
-    category: "財務管理",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 10,
-    name: "房屋與車位租賃媒合辦法",
-    file: "和境心見社區-房屋與車位租賃媒合辦法(草擬).md",
-    category: "住戶規範",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 11,
-    name: "防災設備與流程 SOP",
-    file: "和境心見社區-防災設備與流程SOP(草擬).md",
-    category: "防災安全",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 12,
-    name: "防災設備檢查表",
-    file: "和境心見社區-防災設備檢查表(草擬).md",
-    category: "防災安全",
-    status: "草擬",
-    version: "v0.1"
-  },
-  {
-    num: 13,
-    name: "地下室空間使用管理辦法",
-    file: "和境心見社區-地下室空間使用管理辦法(草擬).md",
-    category: "公共安全",
-    status: "草擬",
-    version: "v0.1"
-  }
+  { num:1,  name:"門禁磁控與 Etag 條碼管理辦法",    file:"和境心見社區-門禁磁控與Etag條碼管理辦法(草擬).md",        category:"門禁安全", status:"草擬", version:"v0.1" },
+  { num:2,  name:"健身房使用管理辦法",                file:"和境心見社區-健身房使用管理辦法(草擬).md",                category:"公共設施", status:"草擬", version:"v0.1" },
+  { num:3,  name:"訪客管制與夜間安寧維護管理辦法",    file:"和境心見社區-訪客管制與夜間安寧維護管理辦法(草擬).md",    category:"門禁安全", status:"草擬", version:"v0.1" },
+  { num:4,  name:"停車位與車輛管理辦法",              file:"和境心見社區-停車位與車輛管理辦法(草擬).md",              category:"停車管理", status:"草擬", version:"v0.1" },
+  { num:5,  name:"公共空間空調使用管理辦法",          file:"和境心見社區-公共空間空調使用管理辦法(草擬).md",          category:"公共設施", status:"草擬", version:"v0.1" },
+  { num:6,  name:"寵物管理辦法",                      file:"和境心見社區-寵物管理辦法(草擬).md",                      category:"住戶規範", status:"草擬", version:"v0.1" },
+  { num:7,  name:"裝修與施工管理辦法",                file:"和境心見社區-裝修與施工管理辦法(草擬).md",                category:"住戶規範", status:"草擬", version:"v0.1" },
+  { num:8,  name:"防災設備與流程管理辦法",            file:"和境心見社區-防災設備與流程管理辦法(草擬).md",            category:"防災安全", status:"草擬", version:"v0.1" },
+  { num:9,  name:"財務與費用管理辦法",                file:"和境心見社區-財務與費用管理辦法(草擬).md",                category:"財務管理", status:"草擬", version:"v0.1" },
+  { num:10, name:"房屋與車位租賃媒合辦法",            file:"和境心見社區-房屋與車位租賃媒合辦法(草擬).md",            category:"住戶規範", status:"草擬", version:"v0.1" },
+  { num:11, name:"防災設備與流程 SOP",                file:"和境心見社區-防災設備與流程SOP(草擬).md",                category:"防災安全", status:"草擬", version:"v0.1" },
+  { num:12, name:"防災設備檢查表",                    file:"和境心見社區-防災設備檢查表(草擬).md",                    category:"防災安全", status:"草擬", version:"v0.1" },
+  { num:13, name:"地下室空間使用管理辦法",            file:"和境心見社區-地下室空間使用管理辦法(草擬).md",            category:"公共安全", status:"草擬", version:"v0.1" },
 ];
 
 let currentFilter = 'all';
@@ -283,7 +316,6 @@ function renderTable(data) {
   const tbody = document.getElementById('tableBody');
   const empty = document.getElementById('emptyMsg');
   const stats = document.getElementById('stats');
-
   if (data.length === 0) {
     tbody.innerHTML = '';
     empty.style.display = 'block';
@@ -292,11 +324,10 @@ function renderTable(data) {
   }
   empty.style.display = 'none';
   stats.textContent = `顯示 ${data.length} / ${docs.length} 份文件`;
-
   tbody.innerHTML = data.map(d => `
-    <tr data-status="${d.status}">
+    <tr>
       <td class="num">${d.num}</td>
-      <td><a class="doc-link" href="${d.file}">${d.name}</a></td>
+      <td><span class="doc-link" onclick="openDoc('${d.file}', '${d.name}')">${d.name}</span></td>
       <td><span class="category">${d.category}</span></td>
       <td><span class="badge badge-${d.status}">${d.status}</span></td>
       <td style="color:#9ca3af;font-size:.85rem">${d.version}</td>
@@ -307,15 +338,8 @@ function renderTable(data) {
 function filterDocs() {
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   let data = docs;
-  if (currentFilter !== 'all') {
-    data = data.filter(d => d.status === currentFilter);
-  }
-  if (q) {
-    data = data.filter(d =>
-      d.name.toLowerCase().includes(q) ||
-      d.category.toLowerCase().includes(q)
-    );
-  }
+  if (currentFilter !== 'all') data = data.filter(d => d.status === currentFilter);
+  if (q) data = data.filter(d => d.name.toLowerCase().includes(q) || d.category.toLowerCase().includes(q));
   renderTable(data);
 }
 
@@ -326,7 +350,41 @@ function setFilter(val, btn) {
   filterDocs();
 }
 
-// 初始渲染
+/* ── Viewer ── */
+function openDoc(file, name) {
+  const overlay = document.getElementById('viewer-overlay');
+  const content = document.getElementById('viewer-content');
+  document.getElementById('viewer-title').textContent = name;
+  content.innerHTML = '<div id="viewer-loading">載入中…</div>';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  fetch(file)
+    .then(r => {
+      if (!r.ok) throw new Error('無法載入文件');
+      return r.text();
+    })
+    .then(md => {
+      content.innerHTML = marked.parse(md);
+    })
+    .catch(err => {
+      content.innerHTML = `<p style="color:#dc2626">載入失敗：${err.message}</p>`;
+    });
+}
+
+function closeViewer() {
+  document.getElementById('viewer-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// 點擊遮罩關閉
+document.getElementById('viewer-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeViewer();
+});
+
+// ESC 關閉
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
+
 renderTable(docs);
 </script>
 </body>
