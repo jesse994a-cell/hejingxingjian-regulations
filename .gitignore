@@ -1,0 +1,10 @@
+# 備份目錄
+backup/
+
+# 文件原稿
+*.pdf
+*.docx
+
+# 系統檔案
+.DS_Store
+Thumbs.db
