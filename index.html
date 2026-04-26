@@ -355,6 +355,12 @@ function setFilter(val, btn) {
 
 /* ── Viewer ── */
 function openDoc(file, name) {
+  // 本機 file:// 協定無法 fetch，直接開新分頁
+  if (location.protocol === 'file:') {
+    window.open(file, '_blank');
+    return;
+  }
+
   const overlay = document.getElementById('viewer-overlay');
   const content = document.getElementById('viewer-content');
   document.getElementById('viewer-title').textContent = name;
