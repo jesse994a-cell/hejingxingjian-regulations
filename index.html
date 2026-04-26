@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>和境心見社區 — 管理辦法總索引</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: #f5f6fa;
+      color: #2c2c3a;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%);
+      color: white;
+      padding: 2rem 2.5rem 1.5rem;
+    }
+    header h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: .3rem; }
+    header p  { font-size: .9rem; opacity: .8; }
+
+    .toolbar {
+      background: white;
+      border-bottom: 1px solid #e0e4ed;
+      padding: .8rem 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .toolbar input {
+      flex: 1;
+      min-width: 200px;
+      padding: .5rem .9rem;
+      border: 1px solid #ccd3e0;
+      border-radius: 6px;
+      font-size: .95rem;
+      outline: none;
+    }
+    .toolbar input:focus { border-color: #2d6a9f; box-shadow: 0 0 0 3px rgba(45,106,159,.12); }
+
+    .filter-btns { display: flex; gap: .5rem; flex-wrap: wrap; }
+    .filter-btns button {
+      padding: .4rem .9rem;
+      border: 1px solid #ccd3e0;
+      border-radius: 20px;
+      background: white;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .filter-btns button:hover  { background: #eef3fb; border-color: #2d6a9f; }
+    .filter-btns button.active { background: #2d6a9f; color: white; border-color: #2d6a9f; }
+
+    main { padding: 1.8rem 2.5rem; }
+
+    .stats {
+      font-size: .85rem;
+      color: #6b7280;
+      margin-bottom: 1.2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,.07);
+    }
+    thead tr { background: #f0f4fb; }
+    th {
+      text-align: left;
+      padding: .75rem 1rem;
+      font-size: .8rem;
+      font-weight: 600;
+      color: #556;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+      border-bottom: 1px solid #e4e8f0;
+    }
+    td {
+      padding: .85rem 1rem;
+      border-bottom: 1px solid #f0f2f8;
+      vertical-align: middle;
+      font-size: .92rem;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #f8faff; }
+
+    .num { width: 3rem; text-align: center; color: #9ca3af; font-size: .85rem; }
+
+    .doc-link {
+      color: #1a3a5c;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .doc-link:hover { color: #2d6a9f; text-decoration: underline; }
+
+    .badge {
+      display: inline-block;
+      padding: .2rem .6rem;
+      border-radius: 12px;
+      font-size: .78rem;
+      font-weight: 600;
+    }
+    .badge-草案 { background: #fef3c7; color: #92400e; }
+    .badge-草擬 { background: #e0f2fe; color: #0369a1; }
+    .badge-正式 { background: #dcfce7; color: #166534; }
+
+    .category {
+      font-size: .8rem;
+      color: #6b7280;
+      background: #f3f4f6;
+      padding: .15rem .5rem;
+      border-radius: 4px;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 3rem;
+      color: #9ca3af;
+      font-size: .95rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: .8rem;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>和境心見社區 — 管理辦法總索引</h1>
+  <p>共 13 份管理辦法文件 ｜ 最後更新：2026-04-26</p>
+</header>
+
+<div class="toolbar">
+  <input type="text" id="searchInput" placeholder="搜尋辦法名稱…" oninput="filterDocs()" />
+  <div class="filter-btns">
+    <button class="active" onclick="setFilter('all', this)">全部</button>
+    <button onclick="setFilter('草擬', this)">草擬</button>
+    <button onclick="setFilter('正式', this)">正式</button>
+  </div>
+</div>
+
+<main>
+  <div class="stats" id="stats"></div>
+  <table id="docTable">
+    <thead>
+      <tr>
+        <th class="num">#</th>
+        <th>管理辦法名稱</th>
+        <th>類別</th>
+        <th>狀態</th>
+        <th>版本</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+  <div class="empty" id="emptyMsg" style="display:none;">查無符合條件的文件</div>
+</main>
+
+<footer>和境心見社區管委會 ｜ 本頁面由 Claude AI 自動產生</footer>
+
+<script>
+const docs = [
+  {
+    num: 1,
+    name: "門禁磁控與 Etag 條碼管理辦法",
+    file: "和境心見社區-門禁磁控與Etag條碼管理辦法(草擬).md",
+    category: "門禁安全",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 2,
+    name: "健身房使用管理辦法",
+    file: "和境心見社區-健身房使用管理辦法(草擬).md",
+    category: "公共設施",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 3,
+    name: "訪客管制與夜間安寧維護管理辦法",
+    file: "和境心見社區-訪客管制與夜間安寧維護管理辦法(草擬).md",
+    category: "門禁安全",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 4,
+    name: "停車位與車輛管理辦法",
+    file: "和境心見社區-停車位與車輛管理辦法(草擬).md",
+    category: "停車管理",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 5,
+    name: "公共空間空調使用管理辦法",
+    file: "和境心見社區-公共空間空調使用管理辦法(草擬).md",
+    category: "公共設施",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 6,
+    name: "寵物管理辦法",
+    file: "和境心見社區-寵物管理辦法(草擬).md",
+    category: "住戶規範",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 7,
+    name: "裝修與施工管理辦法",
+    file: "和境心見社區-裝修與施工管理辦法(草擬).md",
+    category: "住戶規範",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 8,
+    name: "防災設備與流程管理辦法",
+    file: "和境心見社區-防災設備與流程管理辦法(草擬).md",
+    category: "防災安全",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 9,
+    name: "財務與費用管理辦法",
+    file: "和境心見社區-財務與費用管理辦法(草擬).md",
+    category: "財務管理",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 10,
+    name: "房屋與車位租賃媒合辦法",
+    file: "和境心見社區-房屋與車位租賃媒合辦法(草擬).md",
+    category: "住戶規範",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 11,
+    name: "防災設備與流程 SOP",
+    file: "和境心見社區-防災設備與流程SOP(草擬).md",
+    category: "防災安全",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 12,
+    name: "防災設備檢查表",
+    file: "和境心見社區-防災設備檢查表(草擬).md",
+    category: "防災安全",
+    status: "草擬",
+    version: "v0.1"
+  },
+  {
+    num: 13,
+    name: "地下室空間使用管理辦法",
+    file: "和境心見社區-地下室空間使用管理辦法(草擬).md",
+    category: "公共安全",
+    status: "草擬",
+    version: "v0.1"
+  }
+];
+
+let currentFilter = 'all';
+
+function renderTable(data) {
+  const tbody = document.getElementById('tableBody');
+  const empty = document.getElementById('emptyMsg');
+  const stats = document.getElementById('stats');
+
+  if (data.length === 0) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    stats.textContent = '顯示 0 份文件';
+    return;
+  }
+  empty.style.display = 'none';
+  stats.textContent = `顯示 ${data.length} / ${docs.length} 份文件`;
+
+  tbody.innerHTML = data.map(d => `
+    <tr data-status="${d.status}">
+      <td class="num">${d.num}</td>
+      <td><a class="doc-link" href="${d.file}">${d.name}</a></td>
+      <td><span class="category">${d.category}</span></td>
+      <td><span class="badge badge-${d.status}">${d.status}</span></td>
+      <td style="color:#9ca3af;font-size:.85rem">${d.version}</td>
+    </tr>
+  `).join('');
+}
+
+function filterDocs() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  let data = docs;
+  if (currentFilter !== 'all') {
+    data = data.filter(d => d.status === currentFilter);
+  }
+  if (q) {
+    data = data.filter(d =>
+      d.name.toLowerCase().includes(q) ||
+      d.category.toLowerCase().includes(q)
+    );
+  }
+  renderTable(data);
+}
+
+function setFilter(val, btn) {
+  currentFilter = val;
+  document.querySelectorAll('.filter-btns button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filterDocs();
+}
+
+// 初始渲染
+renderTable(docs);
+</script>
+</body>
+</html>
