@@ -89,7 +89,7 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: #f8faff; }
 
-    .num { width: 3rem; text-align: center; color: #9ca3af; font-size: .85rem; }
+    .num { width: 4rem; text-align: center; color: #6b7280; font-size: .82rem; font-weight: 600; letter-spacing: .02em; }
 
     .doc-link {
       color: #1a3a5c;
@@ -250,7 +250,7 @@
 
 <header>
   <h1>和境心見社區 — 管理辦法總索引</h1>
-  <p>共 14 份管理辦法文件 ｜ 最後更新：2026-04-26</p>
+  <p>共 14 份管理辦法文件 ｜ 最後更新：2026-04-26 ｜ 採分類編號制（A–K）</p>
 </header>
 
 <div class="toolbar">
@@ -297,20 +297,20 @@
 
 <script>
 const docs = [
-  { num:1,  name:"門禁磁控與 Etag 條碼管理辦法",    file:"和境心見社區-門禁磁控與Etag條碼管理辦法(草擬).md",        category:"門禁安全", status:"草擬", version:"v0.1" },
-  { num:2,  name:"健身房使用管理辦法",                file:"和境心見社區-健身房使用管理辦法(草擬).md",                category:"公共設施", status:"草擬", version:"v0.1" },
-  { num:3,  name:"訪客管制與夜間安寧維護管理辦法",    file:"和境心見社區-訪客管制與夜間安寧維護管理辦法(草擬).md",    category:"門禁安全", status:"草擬", version:"v0.1" },
-  { num:4,  name:"停車位與車輛管理辦法",              file:"和境心見社區-停車位與車輛管理辦法(草擬).md",              category:"停車管理", status:"草擬", version:"v0.1" },
-  { num:5,  name:"公共空間空調使用管理辦法",          file:"和境心見社區-公共空間空調使用管理辦法(草擬).md",          category:"公共設施", status:"草擬", version:"v0.1" },
-  { num:6,  name:"寵物管理辦法",                      file:"和境心見社區-寵物管理辦法(草擬).md",                      category:"住戶規範", status:"草擬", version:"v0.1" },
-  { num:7,  name:"裝修與施工管理辦法",                file:"和境心見社區-裝修與施工管理辦法(草擬).md",                category:"住戶規範", status:"草擬", version:"v0.1" },
-  { num:8,  name:"防災設備與流程管理辦法",            file:"和境心見社區-防災設備與流程管理辦法(草擬).md",            category:"防災安全", status:"草擬", version:"v0.1" },
-  { num:9,  name:"財務與費用管理辦法",                file:"和境心見社區-財務與費用管理辦法(草擬).md",                category:"財務管理", status:"草擬", version:"v0.1" },
-  { num:10, name:"房屋與車位租賃媒合辦法",            file:"和境心見社區-房屋與車位租賃媒合辦法(草擬).md",            category:"住戶規範", status:"草擬", version:"v0.1" },
-  { num:11, name:"防災設備與流程 SOP",                file:"和境心見社區-防災設備與流程SOP(草擬).md",                category:"防災安全", status:"草擬", version:"v0.1" },
-  { num:12, name:"防災設備檢查表",                    file:"和境心見社區-防災設備檢查表(草擬).md",                    category:"防災安全", status:"草擬", version:"v0.1" },
-  { num:13, name:"地下室空間使用管理辦法",            file:"和境心見社區-地下室空間使用管理辦法(草擬).md",            category:"公共安全", status:"草擬", version:"v0.1" },
-  { num:14, name:"違規處理與罰則辦法",                file:"和境心見社區-違規處理與罰則辦法(草擬).md",                category:"罰則",     status:"罰則",  version:"v0.3" },
+  { num:"A01", name:"管理委員會組織與運作辦法",          file:"和境心見社區-A01-管理委員會組織與運作辦法(草擬).md",          category:"基礎治理", status:"草擬", version:"v0.1" },
+  { num:"A02", name:"區分所有權人會議管理辦法",          file:"和境心見社區-A02-區分所有權人會議管理辦法(草擬).md",          category:"基礎治理", status:"草擬", version:"v0.1" },
+  { num:"A03", name:"管理委員會交接與移交作業辦法",      file:"和境心見社區-A03-管理委員會交接與移交作業辦法(草擬).md",      category:"基礎治理", status:"草擬", version:"v0.1" },
+  { num:"B01", name:"住戶規約與各項管理辦法適用準則",    file:"和境心見社區-B01-住戶規約與各項管理辦法適用準則(草擬).md",    category:"法務治理", status:"草擬", version:"v0.1" },
+  { num:"B02", name:"違規管理與裁罰辦法",                file:"和境心見社區-B02-違規管理與裁罰辦法(草擬).md",                category:"法務治理", status:"罰則",  version:"v0.1" },
+  { num:"C01", name:"財務與預算暨基金管理辦法",          file:"和境心見社區-C01-財務與預算暨基金管理辦法(草擬).md",          category:"財務管理", status:"草擬", version:"v0.1" },
+  { num:"D01", name:"資產與採購管理辦法",                file:"和境心見社區-D01-資產與採購管理辦法(草擬).md",                category:"資產採購", status:"草擬", version:"v0.1" },
+  { num:"E01", name:"社區安全與防災管理辦法",            file:"和境心見社區-E01-社區安全與防災管理辦法(草擬).md",            category:"防災安全", status:"草擬", version:"v0.1" },
+  { num:"F01", name:"公共設施使用管理辦法",              file:"和境心見社區-F01-公共設施使用管理辦法(草擬).md",              category:"設施使用", status:"草擬", version:"v0.1" },
+  { num:"G01", name:"住戶生活管理辦法",                  file:"和境心見社區-G01-住戶生活管理辦法(草擬).md",                  category:"生活管理", status:"草擬", version:"v0.1" },
+  { num:"H01", name:"車輛與門禁管理辦法",                file:"和境心見社區-H01-車輛與門禁管理辦法(草擬).md",                category:"車輛門禁", status:"草擬", version:"v0.1" },
+  { num:"I01", name:"資訊與資料安全管理辦法",            file:"和境心見社區-I01-資訊與資料安全管理辦法(草擬).md",            category:"資訊資安", status:"草擬", version:"v0.1" },
+  { num:"J01", name:"社區溝通與住戶服務管理辦法",        file:"和境心見社區-J01-社區溝通與住戶服務管理辦法(草擬).md",        category:"溝通服務", status:"草擬", version:"v0.1" },
+  { num:"K01", name:"裝修與施工管理辦法",                file:"和境心見社區-K01-裝修與施工管理辦法(草擬).md",                category:"裝修施工", status:"草擬", version:"v0.1" },
 ];
 
 let currentFilter = 'all';
@@ -329,7 +329,7 @@ function renderTable(data) {
   stats.textContent = `顯示 ${data.length} / ${docs.length} 份文件`;
   tbody.innerHTML = data.map(d => `
     <tr>
-      <td class="num">${d.num}</td>
+      <td class="num" style="font-family:monospace">${d.num}</td>
       <td><span class="doc-link" onclick="openDoc('${d.file}', '${d.name}')">${d.name}</span></td>
       <td><span class="category">${d.category}</span></td>
       <td><span class="badge badge-${d.status}">${d.status}</span></td>
