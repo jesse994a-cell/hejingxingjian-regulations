@@ -12,7 +12,8 @@
 3. **索引頁**：所有管理辦法統一由 `index.html` 連結，提供瀏覽器開啟查詢。
 4. **不使用 Google Drive**：不再上傳至 Google Drive，所有文件保存在本機目錄。
 5. **目錄整潔**：主工作目錄只保留 `CLAUDE.md`、`index.html` 及 18 份 A01–L01（含 G02、G03、J02）`.md` 文件；其他非必要檔案一律移入 `backup/` 子目錄。
-6. **全文搜尋**：`index.html` 已內嵌所有 MD 全文內容，搜尋 bar 輸入關鍵字可查詢條文內容，並顯示命中於哪份文件及上下文片段（含命中次數排序）。每次新增或修改 MD 文件後，必須重新執行「重建 index.html」腳本以更新嵌入內容。
+6. **全文搜尋**：`index.html` 已內嵌所有 MD 全文內容，搜尋 bar 輸入關鍵字可查詢條文內容，並顯示命中於哪份文件及上下文片段（含命中次數排序）。每次新增或修改 MD 文件後，由 **JJ 自行執行 `rebuild_index.py`** 以更新嵌入內容（Claude 不再負責此步驟）。
+7. **作業分工**：Claude 負責修改／新增 `.md` 文件及 `index.html` 的 docs 陣列與樣式；**rebuild index.html 及 git push 均由 JJ 自行執行**。Claude 每次完成修改後，必須提供完整的 git push 指令供 JJ 直接複製執行。
 
 ---
 
@@ -236,14 +237,14 @@ for fname in sorted(md_files):
 - 此功能在本機 `file://` 及 GitHub Pages 均可正常使用
 
 ### ⚠️ 重要：新增或修改 MD 後必須重建 index.html
-每次新增或修改任何 `.md` 文件後，必須執行下列腳本重建 `index.html`，否則全文搜尋內容不會更新：
+每次新增或修改任何 `.md` 文件後，由 **JJ 自行在終端機執行**下列指令：
 
 ```bash
-# 在 Claude 工作環境（Bash）執行
-python3 /tmp/rebuild_index.py
+cd /Users/jesse/Documents/0_社區管理
+python3 rebuild_index.py
 ```
 
-或請 Claude 執行「重建 index.html（含全文搜尋）」作業。
+> **注意：** Claude 不再執行 rebuild，也不再執行 git push。Claude 完成修改後只提供 git push 指令供 JJ 複製執行。
 
 ### index.html 篩選按鈕規則
 - **全部**：顯示所有文件
@@ -251,11 +252,16 @@ python3 /tmp/rebuild_index.py
 - **正式**：已通過管委會決議（status: "正式"）
 - **罰則**：違規處理與罰則類文件（status: "罰則"，badge 顯示紅色）
 
-### 新增文件至 index.html 的步驟
-1. 建立新 `.md` 檔案（依命名規則）
-2. 在 `docs` 陣列新增一筆物件
-3. 重建 index.html（執行上方腳本）
-4. 同步更新本 CLAUDE.md 的文件清單
+### 新增文件至 index.html 的步驟（分工說明）
+
+| 步驟 | 負責人 | 說明 |
+|------|--------|------|
+| 1. 建立新 `.md` 檔案 | Claude | 依命名規則建立，存入主工作目錄 |
+| 2. 在 `index.html` docs 陣列新增一筆物件 | Claude | 補上 num、name、file、category、status、version |
+| 3. 在 `rebuild_index.py` docs 清單新增一行 | Claude | 格式：`('編號', '檔名.md'),` |
+| 4. 執行 `python3 rebuild_index.py` | **JJ** | 重建 index.html 全文搜尋內容 |
+| 5. 執行 git push | **JJ** | 使用 Claude 提供的指令 |
+| 6. 同步更新 CLAUDE.md 文件清單 | Claude | 於同一次作業完成 |
 
 ---
 
@@ -266,13 +272,14 @@ python3 /tmp/rebuild_index.py
 - **網址：** `https://github.com/jesse994a-cell/hejingxingjian-regulations`
 - **GitHub Pages 網址：** `https://jesse994a-cell.github.io/hejingxingjian-regulations/`
 
-### 標準 Push 流程
+### 標準 Push 流程（由 JJ 執行）
+
+每次 Claude 完成修改後，Claude 會提供以下格式的完整指令：
 
 ```bash
 cd /Users/jesse/Documents/0_社區管理
-git add .
-git commit -m "說明本次變更內容"
-git push
+python3 rebuild_index.py
+git add . && git commit -m "說明本次變更內容" && git push
 ```
 
 ### .gitignore 規則
@@ -327,4 +334,4 @@ A: 確認已 `git add .`（有 commit 才能 push）；若出現 `src refspec ma
 
 ---
 
-*最後更新：2026-04-27（v2.7 — 代收郵件辦法改編號 J02→G04；CLAUDE.md 目錄樹、文件清單、分類代碼表同步更新；index.html mdContents 及 docs 陣列完整更新）*
+*最後更新：2026-04-27（v2.8 — 新增作業分工規則：rebuild index.html 及 git push 改由 JJ 自行執行；Claude 每次完成修改後提供完整 git push 指令）*
