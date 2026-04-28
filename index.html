@@ -531,6 +531,65 @@
     .ct-legend { display: flex; gap: .7rem; flex-wrap: wrap; align-items: center; }
     .ct-legend span { font-size: .72rem; }
 
+    /* ══ 公共事務按鈕 ══ */
+    .btn-public {
+      background: #1d6348 !important;
+      color: #fff !important;
+      border-color: #1d6348 !important;
+      margin-left: .4rem;
+    }
+    .btn-public:hover { background: #144d38 !important; border-color: #144d38 !important; }
+
+    /* ══ 公共事務面板 ══ */
+    #public-panel-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 9000;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-y: auto;
+    }
+    #public-panel-overlay.open { display: flex; }
+    #public-panel {
+      background: #fff;
+      border-radius: 16px;
+      width: 100%; max-width: 680px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      overflow: hidden;
+      margin: auto;
+    }
+    #public-panel-header {
+      background: linear-gradient(135deg,#1d6348,#2e9e72);
+      color: #fff;
+      padding: 1.2rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    #public-panel-header h2 { font-size: 1.05rem; font-weight: 700; }
+    #public-panel-close {
+      background: rgba(255,255,255,.18);
+      border: none; color: #fff;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #public-panel-close:hover { background: rgba(255,255,255,.3); }
+    #public-panel-body { padding: 1.5rem; }
+    #public-panel-search {
+      width: 100%; padding: .5rem .85rem;
+      border: 1px solid #ccd3e0; border-radius: 8px;
+      font-size: .9rem; outline: none; margin-bottom: 1.1rem;
+      transition: border-color .15s;
+    }
+    #public-panel-search:focus { border-color: #2e9e72; }
+    .public-footer {
+      border-top: 1px solid #e4eaf4;
+      padding: .9rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
     /* ══ 內部管理按鈕 ══ */
     .btn-admin {
       background: #1a3a5c !important;
@@ -703,6 +762,7 @@
     <button onclick="setFilter('正式', this)">正式</button>
     <button onclick="setFilter('罰則', this)">罰則</button>
     <button onclick="setFilter('SOP', this)">SOP</button>
+    <button class="btn-public" onclick="openPublicPanel()">📋 公共事務</button>
     <button class="btn-faq" onclick="openFaqPanel()">💬 問答</button>
     <button class="btn-contract" onclick="openContractPanel()">🤝 特約</button>
     <button class="btn-admin" onclick="openAdminLogin()">🔐 管理</button>
@@ -6178,6 +6238,23 @@ function renderContracts() {
   </div>
 </div>
 
+<!-- ══ 公共事務面板 ══ -->
+<div id="public-panel-overlay" onclick="if(event.target===this)closePublicPanel()">
+  <div id="public-panel">
+    <div id="public-panel-header">
+      <h2>📋 公共事務</h2>
+      <button id="public-panel-close" onclick="closePublicPanel()">✕</button>
+    </div>
+    <div id="public-panel-body">
+      <input type="text" id="public-panel-search" placeholder="🔍 搜尋檔案名稱或說明…" oninput="renderPublicFiles()" autocomplete="off" />
+      <div id="public-file-list"></div>
+    </div>
+    <div class="public-footer admin-footer">
+      <span class="admin-count" id="public-file-count"></span>
+    </div>
+  </div>
+</div>
+
 <!-- ══ 內部管理面板 ══ -->
 <div id="admin-panel-overlay" onclick="handlePanelOverlayClick(event)">
   <div id="admin-panel">
@@ -6310,6 +6387,120 @@ function renderAdminFiles() {
   /* 按分類分群 */
   var cats = {};
   var catOrder = [];
+  filtered.forEach(function(f) {
+    var c = f.cat || '其他';
+    if (!cats[c]) { cats[c] = []; catOrder.push(c); }
+    cats[c].push(f);
+  });
+
+  var html = '';
+  catOrder.forEach(function(cat) {
+    html += '<div class="admin-cat-label">' + cat + '</div>';
+    cats[cat].forEach(function(f) {
+      var t = getFileType(f.file);
+      html += '<a class="admin-file-item" href="' + f.file + '" target="_blank">'
+            +   '<span class="admin-file-icon">' + t.icon + '</span>'
+            +   '<div class="admin-file-info">'
+            +     '<div class="admin-file-name">' + f.name + '</div>'
+            +     (f.desc ? '<div class="admin-file-desc">' + f.desc + '</div>' : '')
+            +   '</div>'
+            +   '<span class="admin-type-badge ' + t.cls + '">' + t.badge + '</span>'
+            + '</a>';
+    });
+  });
+
+  list.innerHTML = html;
+  countEl.textContent = '共 ' + filtered.length + ' 筆' + (q ? '（搜尋：' + q + '）' : '');
+}
+
+/* ════════════════════════════════════════════════
+   公共事務檔案清單
+   新增檔案：在下方 publicFiles 陣列加一筆物件
+   欄位說明同 adminFiles
+   ════════════════════════════════════════════════ */
+var publicFiles = [
+  /* ── 函文往來 ── */
+  { cat:'函文往來', name:'公設點交相約函文（致和境建設）', file:'公共事務/20250923_至和境建設公設點交相約函文.pdf', desc:'2025-09-23' },
+  { cat:'函文往來', name:'致和境建設函文－一樓綠植防水重作', file:'公共事務/20251024_致和境建設函文-一樓綠植防水重作.docx', desc:'2025-10-24' },
+  { cat:'函文往來', name:'致和境建設函文－地下室防水工程', file:'公共事務/20251119_致和境建設函文-地下室防水工程.pdf', desc:'2025-11-19' },
+  { cat:'函文往來', name:'至和境建設函文（1224）', file:'公共事務/20251224_至和境建設1224函文.pdf', desc:'2025-12-24' },
+  { cat:'函文往來', name:'吸菸區規劃函文副本（李宗豪）', file:'公共事務/20260203_吸菸區規劃函文副本-李宗豪.pdf', desc:'2026-02-03' },
+  { cat:'函文往來', name:'至和境建設函文（1150120）', file:'公共事務/20260121_至和境建設1150120函文.pdf', desc:'2026-01-21' },
+  { cat:'函文往來', name:'和境建設漏水回函', file:'公共事務/20260421_和境建設漏水回函.pdf', desc:'2026-04-21' },
+  { cat:'函文往來', name:'國霖機電公設點交回函', file:'公共事務/20260427_國霖機電公設點交回函.pdf', desc:'2026-04-27' },
+
+  /* ── 政府公務 ── */
+  { cat:'政府公務', name:'和境善捷段汙水核准文', file:'公共事務/20241017_和境善捷段-汙水核准文.pdf', desc:'2024-10-17' },
+  { cat:'政府公務', name:'龜山區公所雙黃線回函', file:'公共事務/20250903_龜山區公所雙黃線回函.pdf', desc:'2025-09-03' },
+  { cat:'政府公務', name:'管委會組織報備證明', file:'公共事務/20250910_組織報備證明.pdf', desc:'2025-09-10' },
+  { cat:'政府公務', name:'李宗豪會勘社區周邊交通回函', file:'公共事務/20260910_李宗豪會勘社區周邊交通回函.pdf', desc:'2026-09-10' },
+  { cat:'政府公務', name:'非農地環境雜草管理自治條例草案', file:'公共事務/20260102_桃園市非農地環境雜草管理自治條例草案逐條說明.pdf', desc:'2026-01-02' },
+  { cat:'政府公務', name:'非農地環境雜草管理指引', file:'公共事務/20260102_非農地(非農用)之環境雜草管理指引.pdf', desc:'2026-01-02' },
+
+  /* ── 會議紀錄 ── */
+  { cat:'會議紀錄', name:'第一屆區分所有權人會議紀錄', file:'公共事務/20250905_第一屆區分所有權人會議紀錄.pdf', desc:'2025-09-05' },
+
+  /* ── 合約 ── */
+  { cat:'合約', name:'公安保險合約', file:'公共事務/20250922_公安保險合約.pdf', desc:'2025-09-22' },
+  { cat:'合約', name:'電梯保養合約書（3月版）', file:'公共事務/20260301_和境心見社區-電梯保養合約書.pdf', desc:'2026-03-01' },
+  { cat:'合約', name:'電梯保養合約書（定稿版）', file:'公共事務/20260317_和境心見社區-電梯保養合約書.pdf', desc:'2026-03-17' },
+  { cat:'合約', name:'消防安全設備檢修委託書', file:'公共事務/20260420_和境心見-消防安全設備檢修委託書.pdf', desc:'2026-04-20' },
+
+  /* ── 報價單 ── */
+  { cat:'報價單', name:'免螺絲組合架報價單', file:'公共事務/20251113_和境心見社區管理委員會免螺絲組合架-報價單.pdf', desc:'2025-11-13' },
+  { cat:'報價單', name:'監視系統報價－IPC鏡頭（光晰）', file:'公共事務/20260105_光晰報價單--和境心見社區.pdf', desc:'2026-01-05' },
+  { cat:'報價單', name:'監視系統報價－WIFI鏡頭（光晰）', file:'公共事務/20260105_光晰報價單--和境心見社區WIFI鏡頭.pdf', desc:'2026-01-05' },
+  { cat:'報價單', name:'電梯報價單', file:'公共事務/20260215_和境心見社區-電梯報價單.pdf', desc:'2026-02-15' },
+
+  /* ── 監視系統 ── */
+  { cat:'監視系統', name:'新增攝影機規劃－IPC方案', file:'公共事務/20251216_和境心見新增攝影機_IPC.pdf', desc:'2025-12-16' },
+  { cat:'監視系統', name:'新增攝影機規劃－類比方案', file:'公共事務/20251216_和境心見新增攝影機_類比.pdf', desc:'2025-12-16' },
+  { cat:'監視系統', name:'新增攝影機－實景DEMO', file:'公共事務/20251216_和境心見新增攝影機DEMO_實景.pdf', desc:'2025-12-16' },
+  { cat:'監視系統', name:'監視系統廠商回覆委員會', file:'公共事務/20260109_監視系統廠商回覆委員會.pdf', desc:'2026-01-09' },
+
+  /* ── 巡檢報告 ── */
+  { cat:'巡檢報告', name:'JJ 地下室巡檢（2025-09）', file:'公共事務/20250914_JJ-地下室巡檢.pdf', desc:'2025-09-14' },
+  { cat:'巡檢報告', name:'JJ 地下室巡檢（2026-04）', file:'公共事務/20260417_JJ-地下室巡檢.pdf', desc:'2026-04-17' },
+
+  /* ── SOP文件 ── */
+  { cat:'SOP文件', name:'保全執勤SOP', file:'公共事務/20251113_和境心見保全執勤SOP.pdf', desc:'2025-11-13' },
+  { cat:'SOP文件', name:'社區安全維護SOP作業程序', file:'公共事務/20251113_社區安全維護SOP作業程序.pdf', desc:'2025-11-13' },
+
+  /* ── 物業管理 ── */
+  { cat:'物業管理', name:'社區物業招標規範', file:'公共事務/20250915_社區物業招標規範.pdf', desc:'2025-09-15' },
+
+  /* ── 其他 ── */
+  { cat:'其他', name:'中秋禮品感謝函', file:'公共事務/20251006_中秋禮品感謝函.pdf', desc:'2025-10-06' },
+  { cat:'其他', name:'地政防詐騙宣導', file:'公共事務/20251129_地政防詐騙宣導.pdf', desc:'2025-11-29' },
+];
+
+/* ── 公共事務面板開關 ── */
+function openPublicPanel() {
+  document.getElementById('public-panel-search').value = '';
+  renderPublicFiles();
+  document.getElementById('public-panel-overlay').classList.add('open');
+}
+function closePublicPanel() {
+  document.getElementById('public-panel-overlay').classList.remove('open');
+}
+
+/* ── 渲染公共事務清單 ── */
+function renderPublicFiles() {
+  var q = (document.getElementById('public-panel-search').value || '').trim().toLowerCase();
+  var filtered = publicFiles.filter(function(f) {
+    return !q || f.name.toLowerCase().includes(q) || (f.desc||'').toLowerCase().includes(q) || (f.cat||'').toLowerCase().includes(q);
+  });
+
+  var list = document.getElementById('public-file-list');
+  var countEl = document.getElementById('public-file-count');
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="admin-empty">找不到符合「' + q + '」的檔案</div>';
+    countEl.textContent = '共 0 筆';
+    return;
+  }
+
+  var cats = {}, catOrder = [];
   filtered.forEach(function(f) {
     var c = f.cat || '其他';
     if (!cats[c]) { cats[c] = []; catOrder.push(c); }
