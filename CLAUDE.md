@@ -57,6 +57,12 @@
 ├── 和境心見社區-G03-寵物管理辦法(草擬).md
 ├── 和境心見社區-G04-代收郵件領取管理辦法(草擬).md
 └── 和境心見社區-K01-裝修與施工管理辦法(草擬).md
+│
+├── 公共事務/                                             ← 社區公務文件目錄（PDF、DOCX，納入版控）
+│   ├── YYYYMMDD_類別-說明.pdf                            ← 命名慣例（類別可自動解析）
+│   └── ...（42 份，詳見 index.html 公共事務面板）
+│
+└── 社區問答101/                                          ← 問答頁面目錄（含 HTML、圖片、PDF）
 ```
 
 ### Bash 對應路徑（Claude 工作環境）
@@ -214,10 +220,19 @@ for fname in sorted(md_files):
 
 ### backup/ 子目錄規則
 - **所有舊版 `.md`**（無分類編號）→ 移入 `backup/`
-- **所有 `.docx` 檔案** → 移入 `backup/`
-- **所有 `.pdf` 檔案** → 移入 `backup/`
+- **所有 `.docx` 檔案**（根目錄） → 移入 `backup/`
+- **所有 `.pdf` 檔案**（根目錄） → 移入 `backup/`
 - **暫存或工作用 `.md`**（如 `doto.md`）→ 移入 `backup/`
 - `backup/` 目錄本身**不納入 index.html** 顯示，亦不需要版控（可加入 `.gitignore`）
+
+### 公共事務/ 子目錄規則
+- **所有公務文件（PDF、DOCX）統一存放於 `公共事務/`**，納入版控，GitHub Pages 可直接連結瀏覽
+- **命名慣例：** `YYYYMMDD_類別-說明.pdf`（類別可被 index.html 自動解析顯示，無需手動填寫）
+  - 例：`20260501_第三方檢驗-消防設備複驗.pdf` → 類別自動顯示為「第三方檢驗」
+- **新增檔案流程：**
+  1. 將檔案存入 `公共事務/`（依命名慣例）
+  2. 在 `index.html` 的 `publicFiles` 陣列加一筆：`{ file:'公共事務/檔名.pdf' }`（若命名符合慣例，cat/name 可省略）
+  3. `git add . && git commit && git push`（無需 rebuild_index.py）
 
 ---
 
@@ -325,9 +340,11 @@ git add . && git commit -m "說明本次變更內容" && git push
 
 ### .gitignore 規則
 - `backup/`：備份目錄不納入版控
-- `*.pdf`：PDF 原始文件不納入版控（體積大）
-- `*.docx`：Word 檔案不納入版控
+- `*.pdf`：根目錄 PDF 不納入版控（體積大）
+- `*.docx`：根目錄 DOCX 不納入版控
 - `.DS_Store`、`Thumbs.db`：系統檔案排除
+- **例外 `!社區問答101/**`**：問答101 目錄內所有檔案（含 PDF、MP4、圖片）納入版控
+- **例外 `!公共事務/**`**：公共事務目錄內所有檔案（PDF、DOCX）納入版控，GitHub Pages 可直接瀏覽
 
 ### 注意事項
 - `git add .` 可正確處理中文檔名（勿用 `*.md` glob，Shell 不一定展開中文檔名）
