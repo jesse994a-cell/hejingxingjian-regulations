@@ -394,6 +394,49 @@
       main { padding: 1.4rem 1.8rem 2rem; }
       #viewer-overlay { padding: 1.5rem .75rem; }
     }
+    /* ── 問答101 按鈕 ── */
+    .btn-faq {
+      background: #0e7490 !important;
+      color: #fff !important;
+      border-color: #0e7490 !important;
+    }
+    .btn-faq:hover { background: #0c6378 !important; border-color: #0c6378 !important; }
+
+    /* ── 問答101 Modal ── */
+    #faq-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.65); z-index: 9000;
+      align-items: flex-start; justify-content: center;
+      padding: 1.5rem 1rem; overflow: hidden;
+    }
+    #faq-overlay.open { display: flex; }
+    #faq-panel {
+      background: #fff; border-radius: 16px;
+      width: 100%; max-width: 900px; height: calc(100vh - 3rem);
+      box-shadow: 0 20px 60px rgba(0,0,0,.4);
+      display: flex; flex-direction: column;
+      overflow: hidden; margin: auto;
+    }
+    #faq-header {
+      background: linear-gradient(135deg,#0c4a6e,#0e7490);
+      color: #fff; padding: 1rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    #faq-header h2 { font-size: 1.05rem; font-weight: 700; }
+    #faq-header .sub { font-size: .76rem; opacity: .75; margin-top: .1rem; }
+    #faq-close {
+      background: rgba(255,255,255,.18); border: none; color: #fff;
+      width: 28px; height: 28px; border-radius: 50%;
+      font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    #faq-close:hover { background: rgba(255,255,255,.3); }
+    #faq-iframe {
+      flex: 1; border: none; width: 100%;
+      background: #fff;
+    }
+
     /* ── 社區特約按鈕 ── */
     .btn-contract {
       background: #b45309 !important;
@@ -662,6 +705,7 @@
     <button onclick="setFilter('正式', this)">正式</button>
     <button onclick="setFilter('罰則', this)">罰則</button>
     <button onclick="setFilter('SOP', this)">SOP</button>
+    <button class="btn-faq" onclick="openFaqPanel()">💬 問答101</button>
     <button class="btn-contract" onclick="openContractPanel()">🤝 社區特約</button>
     <button class="btn-admin" onclick="openAdminLogin()">🔐 內部管理</button>
   </div>
@@ -5923,6 +5967,38 @@ document.getElementById('viewer-overlay').addEventListener('click', function(e) 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
 
 renderTable(docs);
+</script>
+
+<!-- ══ 問答101 Modal ══ -->
+<div id="faq-overlay" onclick="handleFaqOverlay(event)">
+  <div id="faq-panel">
+    <div id="faq-header">
+      <div>
+        <h2>💬 社區問答 101</h2>
+        <div class="sub">和境心見社區 — 常見問題與解答</div>
+      </div>
+      <button id="faq-close" onclick="closeFaqPanel()">✕</button>
+    </div>
+    <iframe id="faq-iframe" src="" title="社區問答101"></iframe>
+  </div>
+</div>
+
+<script>
+function openFaqPanel() {
+  var iframe = document.getElementById('faq-iframe');
+  if (!iframe.src || iframe.src === window.location.href) {
+    iframe.src = '社區問答101/社區問答101.html';
+  }
+  document.getElementById('faq-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeFaqPanel() {
+  document.getElementById('faq-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function handleFaqOverlay(e) {
+  if (e.target === document.getElementById('faq-overlay')) closeFaqPanel();
+}
 </script>
 
 <!-- ══ 社區特約 Modal ══ -->
