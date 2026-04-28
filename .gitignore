@@ -13,6 +13,10 @@ backup/
 !公共事務/
 !公共事務/**
 
+# 例外：SOP 資料夾內的所有檔案需追蹤
+!SOP/
+!SOP/**
+
 # 系統檔案
 .DS_Store
 Thumbs.db

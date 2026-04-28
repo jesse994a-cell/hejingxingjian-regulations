@@ -589,6 +589,11 @@
       padding: .9rem 1.5rem;
       display: flex; align-items: center; justify-content: space-between;
     }
+    .public-cat-badge {
+      font-size: .63rem; font-weight: 700; padding: .15rem .42rem;
+      border-radius: 4px; flex-shrink: 0; letter-spacing: .04em;
+      white-space: nowrap; margin-right: .3rem;
+    }
 
     /* ══ 內部管理按鈕 ══ */
     .btn-admin {
@@ -6415,64 +6420,117 @@ function renderAdminFiles() {
 
 /* ════════════════════════════════════════════════
    公共事務檔案清單
-   新增檔案：在下方 publicFiles 陣列加一筆物件
-   欄位說明同 adminFiles
+   ‣ 新增檔案：在 publicFiles 陣列加一筆，JS 自動依日期倒序排列
+   ‣ 命名慣例（新）：YYYYMMDD_類別-說明.pdf → 類別自動解析顯示
+   ‣ 欄位：cat（類別，舊檔手填）、name（顯示名稱）、
+            file（相對路徑）、desc（說明，可省略）
    ════════════════════════════════════════════════ */
 var publicFiles = [
-  /* ── 函文往來 ── */
-  { cat:'函文往來', name:'公設點交相約函文（致和境建設）', file:'公共事務/20250923_至和境建設公設點交相約函文.pdf', desc:'2025-09-23' },
-  { cat:'函文往來', name:'致和境建設函文－一樓綠植防水重作', file:'公共事務/20251024_致和境建設函文-一樓綠植防水重作.docx', desc:'2025-10-24' },
-  { cat:'函文往來', name:'致和境建設函文－地下室防水工程', file:'公共事務/20251119_致和境建設函文-地下室防水工程.pdf', desc:'2025-11-19' },
-  { cat:'函文往來', name:'至和境建設函文（1224）', file:'公共事務/20251224_至和境建設1224函文.pdf', desc:'2025-12-24' },
-  { cat:'函文往來', name:'吸菸區規劃函文副本（李宗豪）', file:'公共事務/20260203_吸菸區規劃函文副本-李宗豪.pdf', desc:'2026-02-03' },
-  { cat:'函文往來', name:'至和境建設函文（1150120）', file:'公共事務/20260121_至和境建設1150120函文.pdf', desc:'2026-01-21' },
-  { cat:'函文往來', name:'和境建設漏水回函', file:'公共事務/20260421_和境建設漏水回函.pdf', desc:'2026-04-21' },
-  { cat:'函文往來', name:'國霖機電公設點交回函', file:'公共事務/20260427_國霖機電公設點交回函.pdf', desc:'2026-04-27' },
+  /* ── 第三方檢驗 ── */
+  { cat:'第三方檢驗', name:'國霖機電公設點交回函',             file:'公共事務/20260427_國霖機電公設點交回函.pdf' },
+
+  /* ── 建商往來 ── */
+  { cat:'建商往來', name:'和境建設漏水回函',                   file:'公共事務/20260421_和境建設漏水回函.pdf' },
+  { cat:'建商往來', name:'至和境建設函文（1150120）',           file:'公共事務/20260121_至和境建設1150120函文.pdf' },
+  { cat:'建商往來', name:'吸菸區規劃函文副本（李宗豪）',        file:'公共事務/20260203_吸菸區規劃函文副本-李宗豪.pdf' },
+  { cat:'建商往來', name:'至和境建設函文（1224）',              file:'公共事務/20251224_至和境建設1224函文.pdf' },
+  { cat:'建商往來', name:'致和境建設函文－地下室防水工程',      file:'公共事務/20251119_致和境建設函文-地下室防水工程.pdf' },
+  { cat:'建商往來', name:'致和境建設函文－一樓綠植防水重作',    file:'公共事務/20251024_致和境建設函文-一樓綠植防水重作.docx' },
+  { cat:'建商往來', name:'公設點交相約函文（致和境建設）',       file:'公共事務/20250923_致和境建設公設點交相約函文.pdf' },
+
+  /* ── 民代往來 ── */
+  { cat:'民代往來', name:'李宗豪會勘社區周邊交通回函',          file:'公共事務/20260910_李宗豪會勘社區周邊交通回函.pdf' },
+  { cat:'民代往來', name:'吸菸區規劃—李宗豪函文副本',           file:'公共事務/20260203_吸菸區規劃函文副本-李宗豪.pdf', desc:'同建商往來' },
+  { cat:'民代往來', name:'牛委員回函',                          file:'公共事務/20250930_牛委員回函.pdf' },
+  { cat:'民代往來', name:'致牛煦庭委員函文',                    file:'公共事務/20250923_致牛煦庭委員函文.pdf' },
+  { cat:'民代往來', name:'致議員李宗豪函文',                    file:'公共事務/20250923_致議員李宗豪函文.pdf' },
+  { cat:'民代往來', name:'議員陳雅倫函文掃描檔',                file:'公共事務/20250920_議員陳雅倫函文掃描檔.pdf' },
+  { cat:'民代往來', name:'陳雅倫議員—申請公車站點與機車畫線',   file:'公共事務/20250908_陳雅倫議員-申請公車站點與機車畫線.pdf' },
 
   /* ── 政府公務 ── */
-  { cat:'政府公務', name:'和境善捷段汙水核准文', file:'公共事務/20241017_和境善捷段-汙水核准文.pdf', desc:'2024-10-17' },
-  { cat:'政府公務', name:'龜山區公所雙黃線回函', file:'公共事務/20250903_龜山區公所雙黃線回函.pdf', desc:'2025-09-03' },
-  { cat:'政府公務', name:'管委會組織報備證明', file:'公共事務/20250910_組織報備證明.pdf', desc:'2025-09-10' },
-  { cat:'政府公務', name:'李宗豪會勘社區周邊交通回函', file:'公共事務/20260910_李宗豪會勘社區周邊交通回函.pdf', desc:'2026-09-10' },
-  { cat:'政府公務', name:'非農地環境雜草管理自治條例草案', file:'公共事務/20260102_桃園市非農地環境雜草管理自治條例草案逐條說明.pdf', desc:'2026-01-02' },
-  { cat:'政府公務', name:'非農地環境雜草管理指引', file:'公共事務/20260102_非農地(非農用)之環境雜草管理指引.pdf', desc:'2026-01-02' },
-
-  /* ── 會議紀錄 ── */
-  { cat:'會議紀錄', name:'第一屆區分所有權人會議紀錄', file:'公共事務/20250905_第一屆區分所有權人會議紀錄.pdf', desc:'2025-09-05' },
+  { cat:'政府公務', name:'非農地環境雜草管理自治條例草案',       file:'公共事務/20260102_桃園市非農地環境雜草管理自治條例草案逐條說明.pdf' },
+  { cat:'政府公務', name:'非農地環境雜草管理指引',              file:'公共事務/20260102_非農地(非農用)之環境雜草管理指引.pdf' },
+  { cat:'政府公務', name:'管委會組織報備證明',                  file:'公共事務/20250910_組織報備證明.pdf' },
+  { cat:'政府公務', name:'龜山區公所雙黃線回函',                file:'公共事務/20250903_龜山區公所雙黃線回函.pdf' },
+  { cat:'政府公務', name:'和境善捷段汙水核准文',                file:'公共事務/20241017_和境善捷段-汙水核准文.pdf' },
 
   /* ── 合約 ── */
-  { cat:'合約', name:'公安保險合約', file:'公共事務/20250922_公安保險合約.pdf', desc:'2025-09-22' },
-  { cat:'合約', name:'電梯保養合約書（3月版）', file:'公共事務/20260301_和境心見社區-電梯保養合約書.pdf', desc:'2026-03-01' },
-  { cat:'合約', name:'電梯保養合約書（定稿版）', file:'公共事務/20260317_和境心見社區-電梯保養合約書.pdf', desc:'2026-03-17' },
-  { cat:'合約', name:'消防安全設備檢修委託書', file:'公共事務/20260420_和境心見-消防安全設備檢修委託書.pdf', desc:'2026-04-20' },
+  { cat:'合約', name:'消防安全設備檢修委託書',                  file:'公共事務/20260420_和境心見-消防安全設備檢修委託書.pdf' },
+  { cat:'合約', name:'電梯保養合約書（定稿版）',                file:'公共事務/20260317_和境心見社區-電梯保養合約書.pdf' },
+  { cat:'合約', name:'電梯保養合約書（3月版）',                 file:'公共事務/20260301_和境心見社區-電梯保養合約書.pdf' },
+  { cat:'合約', name:'公安保險合約',                            file:'公共事務/20250922_公安保險合約.pdf' },
 
   /* ── 報價單 ── */
-  { cat:'報價單', name:'免螺絲組合架報價單', file:'公共事務/20251113_和境心見社區管理委員會免螺絲組合架-報價單.pdf', desc:'2025-11-13' },
-  { cat:'報價單', name:'監視系統報價－IPC鏡頭（光晰）', file:'公共事務/20260105_光晰報價單--和境心見社區.pdf', desc:'2026-01-05' },
-  { cat:'報價單', name:'監視系統報價－WIFI鏡頭（光晰）', file:'公共事務/20260105_光晰報價單--和境心見社區WIFI鏡頭.pdf', desc:'2026-01-05' },
-  { cat:'報價單', name:'電梯報價單', file:'公共事務/20260215_和境心見社區-電梯報價單.pdf', desc:'2026-02-15' },
+  { cat:'報價單', name:'電梯報價單',                            file:'公共事務/20260215_和境心見社區-電梯報價單.pdf' },
+  { cat:'報價單', name:'監視系統報價—WIFI鏡頭（光晰）',         file:'公共事務/20260105_光晰報價單--和境心見社區WIFI鏡頭.pdf' },
+  { cat:'報價單', name:'監視系統報價—IPC鏡頭（光晰）',          file:'公共事務/20260105_光晰報價單--和境心見社區.pdf' },
+  { cat:'報價單', name:'公設點交報價單（議價版）',               file:'公共事務/20251013_公設點交報價單-和境心見(議價).pdf' },
+  { cat:'報價單', name:'免螺絲組合架報價單',                    file:'公共事務/20251113_和境心見社區管理委員會免螺絲組合架-報價單.pdf' },
 
   /* ── 監視系統 ── */
-  { cat:'監視系統', name:'新增攝影機規劃－IPC方案', file:'公共事務/20251216_和境心見新增攝影機_IPC.pdf', desc:'2025-12-16' },
-  { cat:'監視系統', name:'新增攝影機規劃－類比方案', file:'公共事務/20251216_和境心見新增攝影機_類比.pdf', desc:'2025-12-16' },
-  { cat:'監視系統', name:'新增攝影機－實景DEMO', file:'公共事務/20251216_和境心見新增攝影機DEMO_實景.pdf', desc:'2025-12-16' },
-  { cat:'監視系統', name:'監視系統廠商回覆委員會', file:'公共事務/20260109_監視系統廠商回覆委員會.pdf', desc:'2026-01-09' },
+  { cat:'監視系統', name:'監視系統廠商回覆委員會',              file:'公共事務/20260109_監視系統廠商回覆委員會.pdf' },
+  { cat:'監視系統', name:'新增攝影機規劃—實景DEMO',             file:'公共事務/20251216_和境心見新增攝影機DEMO_實景.pdf' },
+  { cat:'監視系統', name:'新增攝影機規劃—實景',                 file:'公共事務/20251216_和境心見新增攝影機_實景.pdf' },
+  { cat:'監視系統', name:'新增攝影機規劃—類比方案',             file:'公共事務/20251216_和境心見新增攝影機_類比.pdf' },
+  { cat:'監視系統', name:'新增攝影機規劃—IPC方案',              file:'公共事務/20251216_和境心見新增攝影機_IPC.pdf' },
+
+  /* ── SOP ── */
+  { cat:'SOP', name:'住戶家無水緊急情況SOP',                    file:'SOP/20260205_住戶家無水緊急情況SOP.pdf' },
+  { cat:'SOP', name:'社區安全維護SOP作業程序',                  file:'SOP/20260101_社區安全維護SOP作業程序.pdf' },
+  { cat:'SOP', name:'保全執勤SOP',                              file:'SOP/20251113_和境心見保全執勤SOP.pdf' },
 
   /* ── 巡檢報告 ── */
-  { cat:'巡檢報告', name:'JJ 地下室巡檢（2025-09）', file:'公共事務/20250914_JJ-地下室巡檢.pdf', desc:'2025-09-14' },
-  { cat:'巡檢報告', name:'JJ 地下室巡檢（2026-04）', file:'公共事務/20260417_JJ-地下室巡檢.pdf', desc:'2026-04-17' },
+  { cat:'巡檢報告', name:'JJ 地下室巡檢（2026-04）',            file:'公共事務/20260417_JJ-地下室巡檢.pdf' },
+  { cat:'巡檢報告', name:'JJ 地下室巡檢（2025-09）',            file:'公共事務/20250914_JJ-地下室巡檢.pdf' },
 
-  /* ── SOP文件 ── */
-  { cat:'SOP文件', name:'保全執勤SOP', file:'公共事務/20251113_和境心見保全執勤SOP.pdf', desc:'2025-11-13' },
-  { cat:'SOP文件', name:'社區安全維護SOP作業程序', file:'公共事務/20251113_社區安全維護SOP作業程序.pdf', desc:'2025-11-13' },
+  /* ── 社區活動 ── */
+  { cat:'社區活動', name:'中秋禮品感謝函',                      file:'公共事務/20251006_中秋禮品感謝函.pdf' },
+  { cat:'社區活動', name:'中秋同樂求贊助函文',                  file:'公共事務/20250930_中秋同樂求贊助函文.pdf' },
 
   /* ── 物業管理 ── */
-  { cat:'物業管理', name:'社區物業招標規範', file:'公共事務/20250915_社區物業招標規範.pdf', desc:'2025-09-15' },
+  { cat:'物業管理', name:'社區物業招標規範',                    file:'公共事務/20250915_社區物業招標規範.pdf' },
 
-  /* ── 其他 ── */
-  { cat:'其他', name:'中秋禮品感謝函', file:'公共事務/20251006_中秋禮品感謝函.pdf', desc:'2025-10-06' },
-  { cat:'其他', name:'地政防詐騙宣導', file:'公共事務/20251129_地政防詐騙宣導.pdf', desc:'2025-11-29' },
+  /* ── 會議紀錄 ── */
+  { cat:'會議紀錄', name:'第一屆區分所有權人會議紀錄',          file:'公共事務/20250905_第一屆區分所有權人會議紀錄.pdf' },
+
+  /* ── 宣導 ── */
+  { cat:'宣導', name:'地政防詐騙宣導',                          file:'公共事務/20251129_地政防詐騙宣導.pdf' },
 ];
+
+/* ── 類別顏色對照表 ── */
+var publicCatColors = {
+  '第三方檢驗': { bg:'#fee2e2', color:'#991b1b' },
+  '建商往來':   { bg:'#fef3c7', color:'#92400e' },
+  '民代往來':   { bg:'#ede9fe', color:'#5b21b6' },
+  '政府公務':   { bg:'#dbeafe', color:'#1e40af' },
+  '合約':       { bg:'#d1fae5', color:'#065f46' },
+  '報價單':     { bg:'#fef9c3', color:'#854d0e' },
+  '監視系統':   { bg:'#e2e8f0', color:'#334155' },
+  'SOP':        { bg:'#e0e7ff', color:'#3730a3' },
+  '巡檢報告':   { bg:'#ffedd5', color:'#7c2d12' },
+  '社區活動':   { bg:'#fce7f3', color:'#831843' },
+  '物業管理':   { bg:'#f0fdf4', color:'#166534' },
+  '會議紀錄':   { bg:'#eef2ff', color:'#312e81' },
+  '宣導':       { bg:'#e0f2fe', color:'#0c4a6e' },
+};
+
+/* ── 從檔名自動解析類別與日期（YYYYMMDD_類別-說明.ext） ── */
+function parsePublicFile(f) {
+  var fname = f.file.split('/').pop();
+  var m = fname.match(/^(\d{8})_([^-\s]{1,8})-(.+)\.[^.]+$/);
+  var dateStr = '';
+  var cat = f.cat || '';
+  var name = f.name || fname.replace(/\.[^.]+$/, '');
+  if (m) {
+    dateStr = m[1].slice(0,4) + '-' + m[1].slice(4,6) + '-' + m[1].slice(6,8);
+    if (!f.cat) cat = m[2];
+    if (!f.name) name = m[3];
+  } else {
+    var dm = fname.match(/^(\d{8})/);
+    if (dm) dateStr = dm[1].slice(0,4) + '-' + dm[1].slice(4,6) + '-' + dm[1].slice(6,8);
+  }
+  return { cat: cat, name: name, dateStr: dateStr, dateKey: fname.slice(0,8) };
+}
 
 /* ── 公共事務面板開關 ── */
 function openPublicPanel() {
@@ -6484,14 +6542,25 @@ function closePublicPanel() {
   document.getElementById('public-panel-overlay').classList.remove('open');
 }
 
-/* ── 渲染公共事務清單 ── */
+/* ── 渲染公共事務清單（日期倒序、類別 badge） ── */
 function renderPublicFiles() {
   var q = (document.getElementById('public-panel-search').value || '').trim().toLowerCase();
+
   var filtered = publicFiles.filter(function(f) {
-    return !q || f.name.toLowerCase().includes(q) || (f.desc||'').toLowerCase().includes(q) || (f.cat||'').toLowerCase().includes(q);
+    var p = parsePublicFile(f);
+    return !q
+      || p.name.toLowerCase().includes(q)
+      || p.cat.toLowerCase().includes(q)
+      || p.dateStr.includes(q)
+      || (f.desc||'').toLowerCase().includes(q);
   });
 
-  var list = document.getElementById('public-file-list');
+  /* 日期倒序 */
+  filtered.sort(function(a, b) {
+    return parsePublicFile(b).dateKey.localeCompare(parsePublicFile(a).dateKey);
+  });
+
+  var list    = document.getElementById('public-file-list');
   var countEl = document.getElementById('public-file-count');
 
   if (!filtered.length) {
@@ -6500,27 +6569,23 @@ function renderPublicFiles() {
     return;
   }
 
-  var cats = {}, catOrder = [];
-  filtered.forEach(function(f) {
-    var c = f.cat || '其他';
-    if (!cats[c]) { cats[c] = []; catOrder.push(c); }
-    cats[c].push(f);
-  });
-
   var html = '';
-  catOrder.forEach(function(cat) {
-    html += '<div class="admin-cat-label">' + cat + '</div>';
-    cats[cat].forEach(function(f) {
-      var t = getFileType(f.file);
-      html += '<a class="admin-file-item" href="' + f.file + '" target="_blank">'
-            +   '<span class="admin-file-icon">' + t.icon + '</span>'
-            +   '<div class="admin-file-info">'
-            +     '<div class="admin-file-name">' + f.name + '</div>'
-            +     (f.desc ? '<div class="admin-file-desc">' + f.desc + '</div>' : '')
-            +   '</div>'
-            +   '<span class="admin-type-badge ' + t.cls + '">' + t.badge + '</span>'
-            + '</a>';
-    });
+  filtered.forEach(function(f) {
+    var p  = parsePublicFile(f);
+    var t  = getFileType(f.file);
+    var cs = publicCatColors[p.cat] || { bg:'#f3f4f6', color:'#374151' };
+    var catBadge = p.cat
+      ? '<span class="public-cat-badge" style="background:' + cs.bg + ';color:' + cs.color + ';">' + p.cat + '</span>'
+      : '';
+    html += '<a class="admin-file-item" href="' + f.file + '" target="_blank">'
+          +   '<span class="admin-file-icon">' + t.icon + '</span>'
+          +   '<div class="admin-file-info">'
+          +     '<div class="admin-file-name">' + p.name + '</div>'
+          +     '<div class="admin-file-desc">' + p.dateStr + '</div>'
+          +   '</div>'
+          +   catBadge
+          +   '<span class="admin-type-badge ' + t.cls + '">' + t.badge + '</span>'
+          + '</a>';
   });
 
   list.innerHTML = html;
