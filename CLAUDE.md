@@ -226,32 +226,72 @@ for fname in sorted(md_files):
 `index.html` 放在主工作目錄，用瀏覽器開啟即可查閱所有管理辦法。
 
 ### index.html 功能
-- 列出全部 18 份管理辦法，點擊名稱在頁面內彈出視窗顯示內容（GitHub Pages）
+- 列出全部文件，點擊名稱在頁面內彈出視窗顯示內容（GitHub Pages）
 - 本機 `file://` 開啟時，點擊名稱會另開新分頁顯示 `.md` 檔案
 - **全文搜尋**：搜尋 bar 同時掃描所有 MD 條文，命中文件依次數排序，顯示上下文片段
-- 支援依狀態過濾（草擬／正式／罰則）
+- 支援依狀態過濾（草擬／正式／罰則／SOP）
+- **標題列份數**：rebuild 時自動從 docs 清單計算規約、管理辦法、SOP 份數並更新日期
 
-### index.html 全文搜尋運作原理
-- 所有 18 份 MD 的全文內容已在建置時**嵌入 index.html**（`mdContents` JS 物件）
-- 搜尋輸入長度 ≥ 2 個字時，自動對全文進行比對，顯示「全文搜尋結果」面板
-- 每份命中文件顯示：文件編號、名稱、命中次數、3 段上下文片段（關鍵字高亮）
-- 此功能在本機 `file://` 及 GitHub Pages 均可正常使用
+### index.html 頂部母法列（position:sticky）
+母法列固定於頁面最頂端，包含三個連結，以 `|` 分隔：
 
-### ⚠️ 重要：新增或修改 MD 後必須重建 index.html
-每次新增或修改任何 `.md` 文件後，由 **JJ 自行在終端機執行**下列指令：
+| 連結 | 說明 |
+|------|------|
+| ⚖️ 公寓大廈管理條例（全文） | 連至全國法規資料庫 |
+| 🏠 A7新林口社區網站 | 連至 tcwang.github.io/A7Xinlinkou/ |
+| 🚌 公車時刻表 | 開啟 bus603.html（603公車資訊頁） |
+
+> 新增母法列連結：直接編輯 index.html `#law-bar` div，加 `|` 分隔，rebuild 不影響。
+
+### index.html 篩選按鈕（toolbar）
+| 按鈕 | 功能 | 樣式 |
+|------|------|------|
+| 全部 | 顯示所有文件 | 預設藍色 |
+| 草擬 | 一般管理辦法 | 預設藍色 |
+| 正式 | 已通過管委會決議 | 預設藍色 |
+| 罰則 | 違規處理文件（badge 紅色） | 預設藍色 |
+| SOP  | SOP 作業程序（badge 橘色） | 預設藍色 |
+| 🤝 社區特約 | 開啟特約商店面板 | 琥珀色（`btn-contract`） |
+| 🔐 內部管理 | 開啟密碼登入面板 | 深藍色（`btn-admin`） |
+
+### 社區特約功能（`contractStores` JS 陣列）
+- 點擊「🤝 社區特約」按鈕開啟面板，**無需密碼**
+- 表格顯示：店家名稱、簽約起始、到期日、狀態（自動依當日日期計算）
+- 狀態徽章：有效（綠）、無限期續約（藍）、即將到期≤90天（黃）、已結束（紅）
+- 支援搜尋 + 篩選（全部／有效／無限期／即將到期／已結束）
+- **新增特約商店**：在 index.html 找到 `var contractStores = [` 陣列，加一筆：
+  ```js
+  { name:'店家名稱', start:'YYYY/M/D', end:'YYYY/M/D' },   // 有期限
+  { name:'店家名稱', start:'YYYY/M/D', end:null },           // 無限期續約
+  { name:'店家名稱', start:null, end:null, ended:true },     // 合約結束
+  ```
+- 此陣列**不在** mdContents 範圍內，rebuild 不影響
+
+### 內部管理功能（需密碼）
+- 帳號 `admin` / 密碼 `16888`
+- 同一 session 已登入，再按按鈕可直接進入
+- 內部文件清單由 `var adminFiles = [` 陣列管理
+- **新增內部文件**：在 index.html 找到 `var adminFiles = [` 陣列，加一筆：
+  ```js
+  { cat:'分類名稱', name:'顯示名稱', file:'檔案名稱.pdf', desc:'說明（可省略）' },
+  ```
+- 支援 PDF、HTML、MD、其他格式，自動識別副檔名顯示對應圖示與徽章
+- 此陣列**不在** mdContents 範圍內，rebuild 不影響
+
+### ⚠️ 重要：rebuild_index.py 的作用範圍
+`rebuild_index.py` 只會更新以下兩項，**其餘 HTML 結構、按鈕、Modal 全部保留**：
+1. `const mdContents = {...}` 區塊（全文搜尋嵌入內容）
+2. 標題列的份數說明與最後更新日期
+
+> Claude 不執行 rebuild，也不執行 git push。Claude 完成修改後提供完整指令供 JJ 複製執行。
+
+### ⚠️ 新增或修改 MD 後必須重建 index.html
+每次新增或修改任何 `.md` 文件後，由 **JJ 自行在終端機執行**：
 
 ```bash
 cd /Users/jesse/Documents/0_社區管理
 python3 rebuild_index.py
 ```
-
-> **注意：** Claude 不再執行 rebuild，也不再執行 git push。Claude 完成修改後只提供 git push 指令供 JJ 複製執行。
-
-### index.html 篩選按鈕規則
-- **全部**：顯示所有文件
-- **草擬**：一般管理辦法（status: "草擬"）
-- **正式**：已通過管委會決議（status: "正式"）
-- **罰則**：違規處理與罰則類文件（status: "罰則"，badge 顯示紅色）
 
 ### 新增文件至 index.html 的步驟（分工說明）
 
