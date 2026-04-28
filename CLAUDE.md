@@ -13,7 +13,8 @@
 4. **不使用 Google Drive**：不再上傳至 Google Drive，所有文件保存在本機目錄。
 5. **目錄整潔**：主工作目錄只保留 `CLAUDE.md`、`index.html` 及 18 份 A01–L01（含 G02、G03、J02）`.md` 文件；其他非必要檔案一律移入 `backup/` 子目錄。
 6. **全文搜尋**：`index.html` 已內嵌所有 MD 全文內容，搜尋 bar 輸入關鍵字可查詢條文內容，並顯示命中於哪份文件及上下文片段（含命中次數排序）。每次新增或修改 MD 文件後，由 **JJ 自行執行 `rebuild_index.py`** 以更新嵌入內容（Claude 不再負責此步驟）。
-7. **作業分工**：Claude 負責修改／新增 `.md` 文件及 `index.html` 的 docs 陣列與樣式；**rebuild index.html 及 git push 均由 JJ 自行執行**。Claude 每次完成修改後，必須提供完整的 git push 指令供 JJ 直接複製執行。
+7. **作業分工**：Claude 負責修改／新增 `.md` 文件及 `index.html` 的 docs 陣列與樣式；**rebuild index.html 及 git push 均由 JJ 自行執行**。Claude 每次完成修改後，必須提供完整的 rebuild + git push 指令供 JJ 直接複製執行。
+8. **index1~5 設計變體**：`index1.html`～`index5.html` 為五款設計風格變體（Corporate Dark、Glassmorphism、Minimal Zen、Cyberpunk Neon、Editorial Magazine），已定稿，**後續不再重新產生**。如需修改樣式，以 `index.html` 為主體進行。
 
 ---
 
