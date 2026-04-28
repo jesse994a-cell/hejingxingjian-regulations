@@ -6150,9 +6150,15 @@ var adminFiles = [
   */
 ];
 
-/* ── 驗證設定 ── */
+/* ── 驗證設定（SHA-256 雜湊，不儲存明碼） ── */
 var _adminOk = false;
-var _AU = 'admin', _AP = '16888';
+var _HU = '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918';
+var _HP = 'dfaf07638f5e92673ef23f8c8878afe8f3580d0fde7fb54b23e841626c3bedbc';
+
+async function sha256(str) {
+  var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(function(b){ return b.toString(16).padStart(2,'0'); }).join('');
+}
 
 /* ── 登入流程 ── */
 function openAdminLogin() {
@@ -6169,10 +6175,12 @@ function closeAdminLogin() {
 function handleLoginOverlayClick(e) {
   if (e.target === document.getElementById('admin-login-overlay')) closeAdminLogin();
 }
-function doAdminLogin() {
+async function doAdminLogin() {
   var u = document.getElementById('admin-user').value.trim();
   var p = document.getElementById('admin-pass').value;
-  if (u === _AU && p === _AP) {
+  var hu = await sha256(u);
+  var hp = await sha256(p);
+  if (hu === _HU && hp === _HP) {
     _adminOk = true;
     closeAdminLogin();
     openAdminPanel();
