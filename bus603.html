@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>603 公車時刻表 — 和境心見社區</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;background:#f5f6fa;color:#2c2c3a;min-height:100vh;display:flex;flex-direction:column}
+
+/* ── Header ── */
+header{
+  background:linear-gradient(135deg,#1a3a5c 0%,#2d6a9f 100%);
+  color:#fff;padding:1.2rem 2rem;
+  display:flex;align-items:center;gap:1rem;
+  box-shadow:0 2px 12px rgba(0,0,0,.2);
+}
+.back-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);
+  color:#fff;padding:.4rem .9rem;border-radius:6px;font-size:.82rem;
+  cursor:pointer;text-decoration:none;transition:background .2s;white-space:nowrap;
+}
+.back-btn:hover{background:rgba(255,255,255,.25)}
+.header-text h1{font-size:1.2rem;font-weight:700;line-height:1.2}
+.header-text p{font-size:.78rem;opacity:.75;margin-top:.2rem}
+.bus-badge{
+  margin-left:auto;background:#e8c547;color:#1a3a5c;
+  font-size:1.5rem;font-weight:900;padding:.3rem .9rem;
+  border-radius:8px;letter-spacing:.05em;white-space:nowrap;
+}
+
+/* ── Info bar ── */
+.info-bar{
+  background:#fff;border-bottom:1px solid #e0e4ed;
+  padding:.65rem 2rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;
+  font-size:.82rem;color:#6b7280;
+}
+.info-item{display:flex;align-items:center;gap:.35rem}
+.info-item strong{color:#1a3a5c}
+.ext-link{
+  margin-left:auto;display:inline-flex;align-items:center;gap:.35rem;
+  background:#2d6a9f;color:#fff;padding:.38rem .85rem;border-radius:5px;
+  font-size:.78rem;font-weight:600;text-decoration:none;transition:background .2s;
+}
+.ext-link:hover{background:#1a3a5c}
+
+/* ── iframe container ── */
+.iframe-wrap{
+  flex:1;display:flex;flex-direction:column;
+  padding:1rem 2rem 1.5rem;min-height:0;
+}
+.iframe-card{
+  flex:1;border-radius:12px;overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,.1);
+  border:1px solid #e0e4ed;
+  display:flex;flex-direction:column;
+  min-height:600px;
+}
+iframe{
+  width:100%;flex:1;border:none;
+  min-height:600px;
+}
+.iframe-fallback{
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  flex:1;padding:2rem;text-align:center;color:#6b7280;
+  background:#fafbfc;
+}
+.iframe-fallback p{margin-bottom:1rem;font-size:.92rem}
+.iframe-fallback a{
+  display:inline-block;background:#2d6a9f;color:#fff;
+  padding:.6rem 1.4rem;border-radius:8px;text-decoration:none;font-weight:600;
+}
+
+/* ── Footer ── */
+footer{background:#f0f2f8;border-top:1px solid #e0e4ed;padding:.65rem 2rem;text-align:center;font-size:.75rem;color:#9ca3af}
+
+@media(max-width:600px){
+  header{padding:1rem}
+  .bus-badge{font-size:1.1rem}
+  .info-bar{padding:.6rem 1rem}
+  .iframe-wrap{padding:.75rem 1rem 1rem}
+  .ext-link span{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back-btn" href="javascript:history.back()">← 返回</a>
+  <div class="header-text">
+    <h1>公車時刻表</h1>
+    <p>和境心見社區對外公共交通資訊</p>
+  </div>
+  <div class="bus-badge">603</div>
+</header>
+
+<div class="info-bar">
+  <div class="info-item">🚌 <strong>路線：</strong>603</div>
+  <div class="info-item">📍 <strong>營運：</strong>桃園市公共汽車</div>
+  <div class="info-item">📡 <strong>資料來源：</strong>雲端公車</div>
+  <a class="ext-link" href="https://yunbus.tw/lite/route.php?id=TAO6030" target="_blank">
+    🔗 <span>開啟原始頁面</span>
+  </a>
+</div>
+
+<div class="iframe-wrap">
+  <div class="iframe-card">
+    <iframe
+      id="busFrame"
+      src="https://yunbus.tw/lite/route.php?id=TAO6030"
+      title="603 公車時刻表"
+      loading="lazy"
+      sandbox="allow-scripts allow-same-origin allow-forms"
+    ></iframe>
+    <div class="iframe-fallback" id="fallback">
+      <p>無法嵌入顯示，請直接開啟外部頁面查詢。</p>
+      <a href="https://yunbus.tw/lite/route.php?id=TAO6030" target="_blank">開啟 603 公車時刻表 →</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  和境心見社區管委會 · 資料由雲端公車（yunbus.tw）提供，本頁僅作便民查詢用途
+</footer>
+
+<script>
+// 若 iframe 無法載入，顯示 fallback
+const frame = document.getElementById('busFrame');
+const fallback = document.getElementById('fallback');
+let loaded = false;
+frame.addEventListener('load', () => { loaded = true; });
+setTimeout(() => {
+  if (!loaded) {
+    frame.style.display = 'none';
+    fallback.style.display = 'flex';
+  }
+}, 6000);
+</script>
+
+</body>
+</html>
