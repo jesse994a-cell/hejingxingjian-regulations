@@ -394,6 +394,242 @@
       main { padding: 1.4rem 1.8rem 2rem; }
       #viewer-overlay { padding: 1.5rem .75rem; }
     }
+    /* ── 社區特約按鈕 ── */
+    .btn-contract {
+      background: #b45309 !important;
+      color: #fff !important;
+      border-color: #b45309 !important;
+    }
+    .btn-contract:hover { background: #92400e !important; border-color: #92400e !important; }
+
+    /* ── 社區特約 Modal ── */
+    #contract-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,.6); z-index: 9000;
+      align-items: flex-start; justify-content: center;
+      padding: 2rem 1rem; overflow-y: auto;
+    }
+    #contract-overlay.open { display: flex; }
+    #contract-panel {
+      background: #fff; border-radius: 16px;
+      width: 100%; max-width: 820px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      overflow: hidden; margin: auto;
+    }
+    #contract-header {
+      background: linear-gradient(135deg,#78350f,#b45309);
+      color: #fff; padding: 1.2rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    #contract-header h2 { font-size: 1.05rem; font-weight: 700; }
+    #contract-header .sub { font-size: .78rem; opacity: .75; margin-top: .15rem; }
+    #contract-close {
+      background: rgba(255,255,255,.18); border: none; color: #fff;
+      width: 28px; height: 28px; border-radius: 50%;
+      font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    #contract-close:hover { background: rgba(255,255,255,.3); }
+    #contract-toolbar {
+      padding: 1rem 1.5rem .7rem;
+      border-bottom: 1px solid #e9ecf3;
+      display: flex; gap: .55rem; flex-wrap: wrap; align-items: center;
+    }
+    #contract-search {
+      flex: 1; min-width: 150px;
+      padding: .42rem .8rem; border: 1px solid #ccd3e0;
+      border-radius: 8px; font-size: .88rem; outline: none;
+      transition: border-color .15s;
+    }
+    #contract-search:focus { border-color: #b45309; }
+    .ct-filter {
+      padding: .3rem .72rem; border: 1px solid #ccd3e0;
+      border-radius: 20px; background: #fff;
+      font-size: .78rem; cursor: pointer; white-space: nowrap;
+      transition: all .15s;
+    }
+    .ct-filter:hover { background: #fef3c7; border-color: #b45309; }
+    .ct-filter.active { background: #b45309; color: #fff; border-color: #b45309; }
+    #contract-body { padding: 0 1.5rem .8rem; overflow-x: auto; }
+    #contract-table {
+      width: 100%; border-collapse: collapse; margin-top: .75rem;
+      font-size: .875rem;
+    }
+    #contract-table th {
+      background: #fef3c7; color: #78350f;
+      font-size: .74rem; font-weight: 700;
+      letter-spacing: .06em; text-transform: uppercase;
+      padding: .58rem .8rem; text-align: left;
+      border-bottom: 2px solid #fde68a; white-space: nowrap;
+    }
+    #contract-table th:first-child { text-align: center; width: 40px; }
+    #contract-table td {
+      padding: .6rem .8rem; border-bottom: 1px solid #f1f3f8;
+      vertical-align: middle;
+    }
+    #contract-table td:first-child { text-align: center; color: #9ca3af; font-size: .78rem; }
+    #contract-table tr:last-child td { border-bottom: none; }
+    #contract-table tr:hover td { background: #fffbeb; }
+    .ct-badge {
+      display: inline-block; font-size: .69rem; font-weight: 700;
+      padding: .17rem .48rem; border-radius: 20px; white-space: nowrap;
+    }
+    .ct-active    { background: #dcfce7; color: #166534; }
+    .ct-unlimited { background: #dbeafe; color: #1e40af; }
+    .ct-soon      { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+    .ct-ended     { background: #fee2e2; color: #991b1b; }
+    .ct-empty { text-align: center; color: #94a3b8; font-size: .88rem; padding: 2.5rem 0; }
+    #contract-footer {
+      border-top: 1px solid #e9ecf3;
+      padding: .75rem 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem;
+    }
+    .ct-stat { font-size: .77rem; color: #94a3b8; }
+    .ct-legend { display: flex; gap: .7rem; flex-wrap: wrap; align-items: center; }
+    .ct-legend span { font-size: .72rem; }
+
+    /* ══ 內部管理按鈕 ══ */
+    .btn-admin {
+      background: #1a3a5c !important;
+      color: #fff !important;
+      border-color: #1a3a5c !important;
+      margin-left: .4rem;
+    }
+    .btn-admin:hover { background: #0f2540 !important; border-color: #0f2540 !important; }
+
+    /* ══ 登入 Modal ══ */
+    #admin-login-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.55);
+      z-index: 9000;
+      align-items: center;
+      justify-content: center;
+    }
+    #admin-login-overlay.open { display: flex; }
+    #admin-login-box {
+      background: #fff;
+      border-radius: 16px;
+      padding: 2rem 2.2rem 1.8rem;
+      width: 320px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      position: relative;
+    }
+    #admin-login-box h2 {
+      font-size: 1.1rem; font-weight: 700;
+      color: #1a3a5c; margin-bottom: 1.2rem; text-align: center;
+    }
+    #admin-login-box label {
+      display: block; font-size: .8rem; color: #555; margin-bottom: .25rem;
+    }
+    #admin-login-box input {
+      width: 100%; padding: .55rem .8rem;
+      border: 1px solid #ccd3e0; border-radius: 8px;
+      font-size: .95rem; margin-bottom: .9rem; outline: none;
+      transition: border-color .15s;
+    }
+    #admin-login-box input:focus { border-color: #2d6a9f; }
+    #admin-login-err {
+      color: #dc2626; font-size: .82rem;
+      text-align: center; margin-bottom: .6rem; min-height: 1.1rem;
+    }
+    .admin-login-btns { display: flex; gap: .6rem; margin-top: .4rem; }
+    .admin-login-btns button {
+      flex: 1; padding: .6rem; border-radius: 8px;
+      font-size: .9rem; font-weight: 600; cursor: pointer; border: none;
+    }
+    #admin-btn-ok  { background: #1a3a5c; color: #fff; }
+    #admin-btn-ok:hover { background: #0f2540; }
+    #admin-btn-cancel { background: #f1f3f8; color: #555; }
+    #admin-btn-cancel:hover { background: #e4e8f0; }
+
+    /* ══ 內部管理面板 ══ */
+    #admin-panel-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.6);
+      z-index: 9000;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 2rem 1rem;
+      overflow-y: auto;
+    }
+    #admin-panel-overlay.open { display: flex; }
+    #admin-panel {
+      background: #fff;
+      border-radius: 16px;
+      width: 100%; max-width: 680px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      overflow: hidden;
+      margin: auto;
+    }
+    #admin-panel-header {
+      background: linear-gradient(135deg,#1a3a5c,#2d6a9f);
+      color: #fff;
+      padding: 1.2rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    #admin-panel-header h2 { font-size: 1.05rem; font-weight: 700; }
+    #admin-panel-close {
+      background: rgba(255,255,255,.18);
+      border: none; color: #fff;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      font-size: 1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #admin-panel-close:hover { background: rgba(255,255,255,.3); }
+    #admin-panel-body { padding: 1.5rem; }
+    /* ── 內部管理面板內容 ── */
+    #admin-panel-search {
+      width: 100%; padding: .5rem .85rem;
+      border: 1px solid #ccd3e0; border-radius: 8px;
+      font-size: .9rem; outline: none; margin-bottom: 1.1rem;
+      transition: border-color .15s;
+    }
+    #admin-panel-search:focus { border-color: #2d6a9f; }
+    .admin-cat-label {
+      font-size: .75rem; font-weight: 700; letter-spacing: .08em;
+      color: #94a3b8; text-transform: uppercase;
+      margin: 1rem 0 .45rem; padding-left: .1rem;
+    }
+    .admin-cat-label:first-child { margin-top: 0; }
+    .admin-file-item {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .7rem .95rem;
+      background: #f7f9fd;
+      border: 1px solid #e4eaf4;
+      border-radius: 10px;
+      margin-bottom: .45rem;
+      text-decoration: none;
+      color: #1a3a5c;
+      transition: background .15s, border-color .15s, transform .1s;
+    }
+    .admin-file-item:hover { background: #eef3fb; border-color: #2d6a9f; transform: translateX(2px); }
+    .admin-file-icon { font-size: 1.25rem; flex-shrink: 0; width: 28px; text-align: center; }
+    .admin-file-info { flex: 1; min-width: 0; }
+    .admin-file-name { font-weight: 600; font-size: .9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .admin-file-desc { font-size: .76rem; color: #6b7280; margin-top: .1rem; }
+    .admin-type-badge {
+      font-size: .68rem; font-weight: 700; padding: .15rem .45rem;
+      border-radius: 4px; flex-shrink: 0; letter-spacing: .04em;
+    }
+    .badge-pdf  { background: #fee2e2; color: #991b1b; }
+    .badge-html { background: #dbeafe; color: #1e40af; }
+    .badge-md   { background: #dcfce7; color: #166534; }
+    .badge-other{ background: #f3f4f6; color: #4b5563; }
+    .admin-empty { text-align: center; color: #94a3b8; font-size: .88rem; padding: 2rem 0; }
+    .admin-footer {
+      border-top: 1px solid #e4eaf4;
+      padding: .9rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-count { font-size: .78rem; color: #94a3b8; }
+    .admin-logout {
+      font-size: .8rem; color: #94a3b8; cursor: pointer;
+      text-decoration: underline; background: none; border: none;
+    }
+    .admin-logout:hover { color: #dc2626; }
   </style>
 </head>
 <body>
@@ -426,6 +662,8 @@
     <button onclick="setFilter('正式', this)">正式</button>
     <button onclick="setFilter('罰則', this)">罰則</button>
     <button onclick="setFilter('SOP', this)">SOP</button>
+    <button class="btn-contract" onclick="openContractPanel()">🤝 社區特約</button>
+    <button class="btn-admin" onclick="openAdminLogin()">🔐 內部管理</button>
   </div>
 </div>
 
@@ -5685,6 +5923,336 @@ document.getElementById('viewer-overlay').addEventListener('click', function(e) 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeViewer(); });
 
 renderTable(docs);
+</script>
+
+<!-- ══ 社區特約 Modal ══ -->
+<div id="contract-overlay" onclick="handleContractOverlay(event)">
+  <div id="contract-panel">
+    <div id="contract-header">
+      <div>
+        <h2>🤝 社區特約商店</h2>
+        <div class="sub" id="contract-header-sub">和境心見社區 — 特約廠商一覽</div>
+      </div>
+      <button id="contract-close" onclick="closeContractPanel()">✕</button>
+    </div>
+    <div id="contract-toolbar">
+      <input type="text" id="contract-search" placeholder="🔍 搜尋店家名稱…" oninput="renderContracts()" autocomplete="off" />
+      <button class="ct-filter active" onclick="setCTFilter('all',this)">全部</button>
+      <button class="ct-filter" onclick="setCTFilter('active',this)">有效</button>
+      <button class="ct-filter" onclick="setCTFilter('unlimited',this)">無限期</button>
+      <button class="ct-filter" onclick="setCTFilter('soon',this)">即將到期</button>
+      <button class="ct-filter" onclick="setCTFilter('ended',this)">已結束</button>
+    </div>
+    <div id="contract-body">
+      <table id="contract-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>店家名稱</th>
+            <th>簽約起始</th>
+            <th>到期日</th>
+            <th>狀態</th>
+          </tr>
+        </thead>
+        <tbody id="contract-tbody"></tbody>
+      </table>
+      <div id="contract-empty" class="ct-empty" style="display:none;">找不到符合的店家</div>
+    </div>
+    <div id="contract-footer">
+      <span class="ct-stat" id="contract-stat"></span>
+      <div class="ct-legend">
+        <span><span class="ct-badge ct-active">有效</span></span>
+        <span><span class="ct-badge ct-unlimited">無限期</span></span>
+        <span><span class="ct-badge ct-soon">即將到期</span> ≤90天</span>
+        <span><span class="ct-badge ct-ended">已結束</span></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   社區特約商店資料
+   新增店家：在 contractStores 陣列加一筆物件
+   欄位：name（必填）、start（簽約起始 YYYY/M/D）、end（到期 YYYY/M/D，null=無限期）、ended（true=已結束）
+   ════════════════════════════════════════════════ */
+var contractStores = [
+  { name:'女子維修',   start:'2024/4/1',  end:'2027/4/30'  },
+  { name:'三小時',     start:'2025/8/1',  end:null         },
+  { name:'上班族',     start:'2025/9/4',  end:null         },
+  { name:'文青璞月',   start:'2025/9/1',  end:null         },
+  { name:'風澤中醫',   start:'2026/4/1',  end:'2026/10/31' },
+  { name:'功夫茶',     start:null,        end:null, ended:true },
+  { name:'卡貝斯',     start:'2025/9/4',  end:'2026/9/4'   },
+  { name:'早點點',     start:'2025/9/4',  end:null         },
+  { name:'辰安藥局',   start:'2025/9/4',  end:'2026/9/4'   },
+  { name:'亞昕車業',   start:'2025/9/4',  end:null         },
+  { name:'長律',       start:'2026/1/1',  end:'2026/12/31' },
+  { name:'茶聚',       start:'2026/1/1',  end:'2027/1/1'   },
+  { name:'唯晶精品',   start:'2025/9/1',  end:null         },
+  { name:'捷康',       start:'2026/1/1',  end:'2026/12/31' },
+  { name:'晨陽',       start:'2025/9/1',  end:'2026/8/31'  },
+  { name:'都會洗衣',   start:'2025/9/5',  end:'2026/9/5'   },
+  { name:'無尾熊診所', start:'2025/9/4',  end:'2026/9/4'   },
+  { name:'超巨',       start:'2025/9/4',  end:'2027/9/4'   },
+  { name:'極禾',       start:'2026/2/10', end:'2026/12/31' },
+  { name:'綠涼淨',     start:'2025/9/4',  end:'2027/9/4'   },
+  { name:'鍍佬爹',     start:'2025/9/4',  end:null         },
+  { name:'鏡化',       start:'2025/9/4',  end:null         },
+];
+
+var _ctFilter = 'all';
+
+function parseDate(s) {
+  if (!s) return null;
+  var p = s.split('/');
+  return new Date(+p[0], +p[1]-1, +p[2]);
+}
+function fmtDate(s) { return s ? s.replace(/\//g,'/') : '—'; }
+
+function getStatus(store) {
+  if (store.ended) return { type:'ended', label:'已結束', days:null };
+  if (!store.end)  return { type:'unlimited', label:'無限期續約', days:null };
+  var ed = parseDate(store.end);
+  var today = new Date(); today.setHours(0,0,0,0);
+  var days = Math.round((ed - today) / 86400000);
+  if (days < 0)   return { type:'ended', label:'已到期', days:days };
+  if (days <= 90) return { type:'soon',  label:'即將到期', days:days };
+  return { type:'active', label:'有效', days:days };
+}
+
+function openContractPanel() {
+  document.getElementById('contract-search').value = '';
+  _ctFilter = 'all';
+  document.querySelectorAll('.ct-filter').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.ct-filter')[0].classList.add('active');
+  renderContracts();
+  document.getElementById('contract-overlay').classList.add('open');
+}
+function closeContractPanel() {
+  document.getElementById('contract-overlay').classList.remove('open');
+}
+function handleContractOverlay(e) {
+  if (e.target === document.getElementById('contract-overlay')) closeContractPanel();
+}
+function setCTFilter(f, btn) {
+  _ctFilter = f;
+  document.querySelectorAll('.ct-filter').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderContracts();
+}
+
+function renderContracts() {
+  var q = (document.getElementById('contract-search').value || '').trim();
+  var list = contractStores.filter(function(s) {
+    if (q && !s.name.includes(q)) return false;
+    if (_ctFilter === 'all') return true;
+    var st = getStatus(s);
+    return st.type === _ctFilter;
+  });
+
+  var tbody = document.getElementById('contract-tbody');
+  var empty = document.getElementById('contract-empty');
+  var stat  = document.getElementById('contract-stat');
+
+  if (!list.length) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    stat.textContent = '共 0 筆';
+    return;
+  }
+  empty.style.display = 'none';
+
+  var counts = { active:0, unlimited:0, soon:0, ended:0 };
+  contractStores.forEach(function(s){ counts[getStatus(s).type]++; });
+
+  tbody.innerHTML = list.map(function(s, i) {
+    var st = getStatus(s);
+    var badge = '<span class="ct-badge ct-' + st.type + '">'
+      + st.label
+      + (st.days !== null && st.days >= 0 ? '（' + st.days + '天）' : '')
+      + '</span>';
+    return '<tr>'
+      + '<td>' + (i+1) + '</td>'
+      + '<td style="font-weight:600;">' + s.name + '</td>'
+      + '<td style="color:#6b7280;">' + fmtDate(s.start) + '</td>'
+      + '<td style="color:#6b7280;">' + (s.end ? fmtDate(s.end) : (s.ended ? '—' : '無限期')) + '</td>'
+      + '<td>' + badge + '</td>'
+      + '</tr>';
+  }).join('');
+
+  stat.textContent = '顯示 ' + list.length + ' / ' + contractStores.length + ' 家｜'
+    + '有效 ' + counts.active + ' · 無限期 ' + counts.unlimited
+    + ' · 即將到期 ' + counts.soon + ' · 已結束 ' + counts.ended;
+}
+</script>
+
+<!-- ══ 登入 Modal ══ -->
+<div id="admin-login-overlay" onclick="handleLoginOverlayClick(event)">
+  <div id="admin-login-box">
+    <h2>🔐 內部管理登入</h2>
+    <label>帳號</label>
+    <input type="text" id="admin-user" placeholder="帳號" autocomplete="off" />
+    <label>密碼</label>
+    <input type="password" id="admin-pass" placeholder="密碼"
+           onkeydown="if(event.key==='Enter')doAdminLogin()" autocomplete="off" />
+    <div id="admin-login-err"></div>
+    <div class="admin-login-btns">
+      <button id="admin-btn-cancel" onclick="closeAdminLogin()">取消</button>
+      <button id="admin-btn-ok"     onclick="doAdminLogin()">登入</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ 內部管理面板 ══ -->
+<div id="admin-panel-overlay" onclick="handlePanelOverlayClick(event)">
+  <div id="admin-panel">
+    <div id="admin-panel-header">
+      <h2>🔐 內部管理</h2>
+      <button id="admin-panel-close" onclick="closeAdminPanel()">✕</button>
+    </div>
+    <div id="admin-panel-body">
+      <input type="text" id="admin-panel-search" placeholder="🔍 搜尋檔案名稱或說明…" oninput="renderAdminFiles()" autocomplete="off" />
+      <div id="admin-file-list"></div>
+    </div>
+    <div class="admin-footer">
+      <span class="admin-count" id="admin-file-count"></span>
+      <button class="admin-logout" onclick="adminLogout()">登出內部管理</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════
+   內部管理檔案清單
+   新增檔案：在下方 adminFiles 陣列加一筆物件
+   欄位說明：
+     name     顯示名稱（必填）
+     file     檔案路徑，相對於 index.html（必填）
+     desc     說明文字（可省略）
+     cat      分類標題（可省略，省略則歸入「其他」）
+   支援副檔名：pdf / html / htm / md
+   ════════════════════════════════════════════════ */
+var adminFiles = [
+  {
+    cat:  '社區圖面',
+    name: '和境心見地下室平面圖',
+    file: '和境心見地下室平面圖_J.pdf',
+    desc: '地下室平面配置圖（J 版）'
+  },
+  /* 範例：之後加入更多檔案只要複製以下格式
+  {
+    cat:  '分類名稱',
+    name: '顯示名稱',
+    file: '檔案名稱.pdf',
+    desc: '說明文字（可省略）'
+  },
+  */
+];
+
+/* ── 驗證設定 ── */
+var _adminOk = false;
+var _AU = 'admin', _AP = '16888';
+
+/* ── 登入流程 ── */
+function openAdminLogin() {
+  if (_adminOk) { openAdminPanel(); return; }
+  document.getElementById('admin-user').value = '';
+  document.getElementById('admin-pass').value = '';
+  document.getElementById('admin-login-err').textContent = '';
+  document.getElementById('admin-login-overlay').classList.add('open');
+  setTimeout(function(){ document.getElementById('admin-user').focus(); }, 80);
+}
+function closeAdminLogin() {
+  document.getElementById('admin-login-overlay').classList.remove('open');
+}
+function handleLoginOverlayClick(e) {
+  if (e.target === document.getElementById('admin-login-overlay')) closeAdminLogin();
+}
+function doAdminLogin() {
+  var u = document.getElementById('admin-user').value.trim();
+  var p = document.getElementById('admin-pass').value;
+  if (u === _AU && p === _AP) {
+    _adminOk = true;
+    closeAdminLogin();
+    openAdminPanel();
+  } else {
+    document.getElementById('admin-login-err').textContent = '帳號或密碼錯誤，請重試。';
+    document.getElementById('admin-pass').value = '';
+    document.getElementById('admin-pass').focus();
+  }
+}
+
+/* ── 面板開關 ── */
+function openAdminPanel() {
+  document.getElementById('admin-panel-search').value = '';
+  renderAdminFiles();
+  document.getElementById('admin-panel-overlay').classList.add('open');
+}
+function closeAdminPanel() {
+  document.getElementById('admin-panel-overlay').classList.remove('open');
+}
+function handlePanelOverlayClick(e) {
+  if (e.target === document.getElementById('admin-panel-overlay')) closeAdminPanel();
+}
+function adminLogout() {
+  _adminOk = false;
+  closeAdminPanel();
+}
+
+/* ── 檔案類型 ── */
+function getFileType(f) {
+  var ext = (f.split('.').pop() || '').toLowerCase();
+  if (ext === 'pdf')  return { badge: 'PDF',  cls: 'badge-pdf',  icon: '📄' };
+  if (ext === 'html' || ext === 'htm') return { badge: 'HTML', cls: 'badge-html', icon: '🌐' };
+  if (ext === 'md')   return { badge: 'MD',   cls: 'badge-md',   icon: '📝' };
+  return { badge: ext.toUpperCase() || 'FILE', cls: 'badge-other', icon: '📎' };
+}
+
+/* ── 渲染清單 ── */
+function renderAdminFiles() {
+  var q = (document.getElementById('admin-panel-search').value || '').trim().toLowerCase();
+  var filtered = adminFiles.filter(function(f) {
+    return !q || f.name.toLowerCase().includes(q) || (f.desc||'').toLowerCase().includes(q) || (f.cat||'').toLowerCase().includes(q);
+  });
+
+  var list = document.getElementById('admin-file-list');
+  var countEl = document.getElementById('admin-file-count');
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="admin-empty">找不到符合「' + q + '」的檔案</div>';
+    countEl.textContent = '共 0 筆';
+    return;
+  }
+
+  /* 按分類分群 */
+  var cats = {};
+  var catOrder = [];
+  filtered.forEach(function(f) {
+    var c = f.cat || '其他';
+    if (!cats[c]) { cats[c] = []; catOrder.push(c); }
+    cats[c].push(f);
+  });
+
+  var html = '';
+  catOrder.forEach(function(cat) {
+    html += '<div class="admin-cat-label">' + cat + '</div>';
+    cats[cat].forEach(function(f) {
+      var t = getFileType(f.file);
+      html += '<a class="admin-file-item" href="' + f.file + '" target="_blank">'
+            +   '<span class="admin-file-icon">' + t.icon + '</span>'
+            +   '<div class="admin-file-info">'
+            +     '<div class="admin-file-name">' + f.name + '</div>'
+            +     (f.desc ? '<div class="admin-file-desc">' + f.desc + '</div>' : '')
+            +   '</div>'
+            +   '<span class="admin-type-badge ' + t.cls + '">' + t.badge + '</span>'
+            + '</a>';
+    });
+  });
+
+  list.innerHTML = html;
+  countEl.textContent = '共 ' + filtered.length + ' 筆' + (q ? '（搜尋：' + q + '）' : '');
+}
 </script>
 </body>
 </html>
