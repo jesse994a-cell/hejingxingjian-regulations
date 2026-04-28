@@ -21,6 +21,7 @@ git add . && git commit -m "說明此次修改" && git push
 """
 
 import os, re
+from datetime import date
 
 # ── 路徑設定 ──────────────────────────────────────────
 workspace  = os.path.dirname(os.path.abspath(__file__))   # 腳本所在目錄
@@ -84,6 +85,22 @@ new_html, count = re.subn(pattern, new_mdContents, html, count=1, flags=re.DOTAL
 if count == 0:
     print('\n❌ 錯誤：找不到 mdContents 區塊，index.html 未更新。')
 else:
+    # ── 自動更新標題列：份數 + 最後更新日期 ──────────────
+    n_rules = sum(1 for k, _ in docs if k == '規約')
+    n_sop   = sum(1 for k, _ in docs if k.startswith('SOP'))
+    n_reg   = len(docs) - n_rules - n_sop
+    today   = date.today().strftime('%Y-%m-%d')
+    new_subtitle = (
+        f'{n_rules} 份住戶管理規約 + {n_reg} 份管理辦法（A01–L01）'
+        + (f' + {n_sop} 份 SOP' if n_sop else '')
+        + f'｜ 最後更新：{today}'
+    )
+    new_html = re.sub(
+        r'(\d+ 份住戶管理規約.*?最後更新：[\d-]+)',
+        new_subtitle,
+        new_html
+    )
     with open(index_path, 'w', encoding='utf-8') as f:
         f.write(new_html)
     print(f'\n✓ index.html 重建完成（{len(new_html):,} chars）')
+    print(f'✓ 標題更新：{new_subtitle}')
