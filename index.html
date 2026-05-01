@@ -540,6 +540,14 @@
     }
     .btn-public:hover { background: #144d38 !important; border-color: #144d38 !important; }
 
+    /* ══ 缺失回報按鈕 ══ */
+    .btn-report {
+      background: #b45309 !important;
+      color: #fff !important;
+      border-color: #b45309 !important;
+    }
+    .btn-report:hover { background: #92400e !important; border-color: #92400e !important; }
+
     /* ══ 公共事務面板 ══ */
     #public-panel-overlay {
       display: none;
@@ -768,6 +776,7 @@
     <button onclick="setFilter('罰則', this)">罰則</button>
     <button onclick="setFilter('SOP', this)">SOP</button>
     <button class="btn-public" onclick="openPublicPanel()">📋 公共事務</button>
+    <button class="btn-report" onclick="window.open('https://cdtms.dataa.com.tw/report','_blank')">🔧 缺失回報</button>
     <button class="btn-faq" onclick="openFaqPanel()">💬 問答</button>
     <button class="btn-contract" onclick="openContractPanel()">🤝 特約</button>
     <button class="btn-admin" onclick="openAdminLogin()">🔐 管理</button>
@@ -3281,7 +3290,8 @@ const mdContents = {
 
 **文件編號：** F01
 **制定日期：** 2026.04.26
-**版本：** v0.3（草擬）
+**最後更新：** 2026.04.30
+**版本：** v0.4（草擬）
 
 ---
 
@@ -3422,7 +3432,7 @@ const mdContents = {
 
 一、嚴禁任意堆放私人雜物、廢棄物或建材。
 
-二、嚴禁停放汽車以外之車輛（紅、黃牌重型機車除外），停放規範依 H01 辦理。
+二、B2–B4 禁停放汽車以外之車輛（紅、黃牌重型機車除外），停放規範依 H01 辦理。
 
 三、嚴禁設置固定或半固定之占用設施。
 
@@ -3489,7 +3499,7 @@ const mdContents = {
 
 一、本社區設立**管理費點數折抵制度**，鼓勵住戶按時繳費並積極參與社區公共設施管理。
 
-二、點數由管委會統一核發，存儲於總幹事點數紀錄冊（或智生活 APP 相關功能，視系統是否支援）。
+二、點數由管委會於每月 1 號統一核發，存儲於各戶智生活 APP 系統。
 
 ### 第十八條（點數累積方式）
 
@@ -3503,15 +3513,15 @@ const mdContents = {
 
 一、點數可用於抵扣下列費用：
 
-（一）預約需付費之公共設施（如會議廳、球藝室、頂樓天臺等）押金或使用費，每點抵新臺幣 **50 元**，每次最多抵扣 **5 點**。
+（一）預約需付費之公共設施（如會議廳、球藝室、兒童遊戲室等）押金或使用費，每點抵新臺幣 **50 元**，每次最多抵扣 **5 點**。
 
 （二）社區公告之其他點數兌換項目（由管委會不定期公告）。
 
-二、使用點數時，住戶應於申請預約時一併告知，由總幹事確認點數餘額後扣除，並出具扣點紀錄。
+二、使用公共設施時，住戶應於智生活 APP 預約並進行扣點（若餘額不足則需至管理中心購買點數），並至管理中心出示預約紀錄領取門禁卡及設施設備。
 
 ### 第二十條（點數查詢）
 
-住戶得隨時向管理中心查詢本戶之點數餘額及使用紀錄，管委會應於公共布告欄或社區通訊群組每季公告各戶點數使用情況。
+住戶可隨時於智生活 APP 內查詢本戶之點數餘額及使用紀錄，若有疑慮請於社區官方 LINE 聯繫管理中心並提供 APP 截圖畫面。
 
 
 ---
@@ -3571,7 +3581,8 @@ const mdContents = {
 
 **文件編號：** G01
 **制定日期：** 2026.04.26
-**版本：** v0.2（草擬）
+**最後更新：** 2026.04.30
+**版本：** v0.3（草擬）
 
 ---
 
@@ -3694,11 +3705,11 @@ const mdContents = {
 
 ### 第十二條（噪音投訴處理程序）
 
-一、住戶遭受噪音侵擾，得向管理室投訴，管理室應立即記錄並通知施擾方改善。
+一、住戶遭受噪音侵擾，請住戶提供錄音檔及發生時間，管理中心應協助確認發生戶別及原因，並記錄及通知施擾方改善，如果無法查明則協助公告及住戶 LINE 大群宣導。
 
-二、施擾方於五分鐘內未改善者，由總幹事親自確認並勸導。
+二、施擾方於五分鐘內未改善者，得由保全物業公司現場值班人員進行勸導。
 
-三、反覆投訴（一個月內三次以上），依 B02 違規管理與裁罰辦法辦理，並得函請環保主管機關裁罰。
+三、反覆投訴（一個月內三次以上），依 B02 違規管理與裁罰辦法辦理。
 
 
 ---
@@ -5876,8 +5887,8 @@ const docs = [
   { num:"C01", name:"財務與預算暨基金管理辦法",       file:"和境心見社區-C01-財務與預算暨基金管理辦法(草擬).md",       category:"財務管理", status:"草擬", version:"v0.2" },
   { num:"D01", name:"資產與採購管理辦法",             file:"和境心見社區-D01-資產與採購管理辦法(草擬).md",             category:"資產採購", status:"草擬", version:"v0.1" },
   { num:"E01", name:"社區安全與防災管理辦法",         file:"和境心見社區-E01-社區安全與防災管理辦法(草擬).md",         category:"防災安全", status:"草擬", version:"v0.3" },
-  { num:"F01", name:"公共設施使用管理辦法",           file:"和境心見社區-F01-公共設施使用管理辦法(草擬).md",           category:"設施使用", status:"草擬", version:"v0.3" },
-  { num:"G01", name:"住戶生活管理辦法",               file:"和境心見社區-G01-住戶生活管理辦法(草擬).md",               category:"生活管理", status:"草擬", version:"v0.2" },
+  { num:"F01", name:"公共設施使用管理辦法",           file:"和境心見社區-F01-公共設施使用管理辦法(草擬).md",           category:"設施使用", status:"草擬", version:"v0.4" },
+  { num:"G01", name:"住戶生活管理辦法",               file:"和境心見社區-G01-住戶生活管理辦法(草擬).md",               category:"生活管理", status:"草擬", version:"v0.3" },
   { num:"G02", name:"垃圾分類與資源回收管理辦法",     file:"和境心見社區-G02-垃圾分類與資源回收管理辦法(草擬).md",     category:"生活管理", status:"草擬", version:"v0.2" },
   { num:"G03", name:"寵物管理辦法",                   file:"和境心見社區-G03-寵物管理辦法(草擬).md",                   category:"生活管理", status:"草擬", version:"v0.1" },
   { num:"G04", name:"代收郵件領取管理辦法",           file:"和境心見社區-G04-代收郵件領取管理辦法(草擬).md",           category:"生活管理", status:"草擬", version:"v0.1" },
